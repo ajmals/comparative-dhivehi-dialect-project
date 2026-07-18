@@ -1,30 +1,37 @@
 # Comparative Dhivehi Dialect Project
 
-This repository contains a comparative vocabulary dataset compiled specifically for linguistic research on the Dhivehi (Maldivian) language, its regional dialects, and its relative and neighboring languages.
+Welcome to the **Comparative Dhivehi Dialect Project**! This is an open-source, community-driven initiative aiming to map, preserve, and analyze the regional dialects of the Dhivehi (Maldivian) language alongside its close relative and neighboring languages.
+
+All data in this repository is completely free, open, and unrestricted for anyone to use, share, and build upon—whether for academic linguistic research, language learning tools, or computational NLP applications.
+
+---
 
 ## Dataset File & Collaboration
-The main dataset is saved as:
+The primary dataset is compiled as a clean CSV file:
 * **[dhivehi_language_comparision.csv](dhivehi_language_comparision.csv)**
 
-To encourage open collaboration, suggestions, and corrections, we also maintain a shared interactive version:
+### Open Collaboration
+Language changes, dialects are diverse, and corrections are always welcome! If you spot a mistake, want to suggest a better term, or wish to contribute new words, you can collaborate directly with us:
 * **[Google Sheets Comparative Table](https://docs.google.com/spreadsheets/d/1eNV8vGmLK5fiN4gR276K0aZQsV8hcCFjA3XVrmLahTQ/edit)**
 
-Researchers and native speakers are welcome to comment and suggest edits directly on the Google Sheet. These suggestions will be reviewed periodically and manually merged back into the primary CSV file in this repository.
+Anyone is free to comment and suggest edits on the Google Sheet. These suggestions are reviewed periodically and manually merged back into the master CSV file in this repository.
+
+---
 
 ## Overview
-The dataset is structured around the standard **Swadesh 100-concept list** (originally proposed by Morris Swadesh in 1955) to support comparative-historical linguistics, dialectology, and lexical similarity analyses.
+The dataset compares standard Dhivehi vocabulary across different regional dialects and relative/neighboring languages based on the standard 100-concept Swadesh list (originally proposed by Morris Swadesh in 1955).
 
-It includes:
+Included Languages & Dialects:
 1. **Dhivehi Dialects**:
    - **Male'** (Standard Maldivian)
    - **Addu** (Southernmost dialect, known for major phonological shifts)
    - **Huvadhu** (Southern dialect, preserving unique archaic features)
 2. **Comparative Languages**:
    - **Sinhala** (Close Relative; Indo-Aryan sibling language)
-   - **Malayalam** (Coast Neighbor; Dravidian language with high geographical contact)
+   - **Malayalam** (Coast Neighbor; Dravidian language with high historical contact)
    - **Arabic** (Significant historical superstrate influence)
 
-Each Dhivehi dialect is split into separate columns for **Latin transliteration** and the **native Thaana script** to facilitate phonetic, phonological, and orthographic studies. All comparison languages are provided in standardized Latin script (ISO/IAST) to maintain clarity and focus on the Maldivian variants.
+Each Dhivehi dialect is split into separate columns for **Latin transliteration** and the **native Thaana script** to support phonological, phonetic, and orthographic analyses. Comparison languages are provided in standardized Latin script (ISO/IAST) to maintain clarity and focus on the Maldivian variants.
 
 ---
 
@@ -56,6 +63,5 @@ Each Dhivehi dialect is split into separate columns for **Latin transliteration*
 
 ---
 
-## Reference Material
-- **[Swadesh1955.pdf](Swadesh1955.pdf)**: The original source paper outlining the 100-concept list published by Morris Swadesh (*Towards a satisfactory calibration of glottochronology*, 1955).
-
+## References & Sources
+- **[Swadesh 1955 Concept List (PDF)](https://s3.nexus.mpcdf.mpg.de/eva-dlce-concepticon/Swadesh1955.pdf)**: The original reference paper outlining the 100-concept list (*Towards a satisfactory calibration of glottochronology*, Morris Swadesh, 1955).
