@@ -1,4 +1,4 @@
-# Comparative Dhivehi Dialect Dataset (Swadesh 100)
+# Comparative Dhivehi Dialect Dataset
 
 This repository contains a comparative vocabulary dataset compiled specifically for linguistic research on the Dhivehi (Maldivian) language, its regional dialects, and its relative and neighboring languages.
 
