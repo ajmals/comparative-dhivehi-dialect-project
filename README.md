@@ -2,9 +2,14 @@
 
 This repository contains a comparative vocabulary dataset compiled specifically for linguistic research on the Dhivehi (Maldivian) language, its regional dialects, and its relative and neighboring languages.
 
-## Dataset File
+## Dataset File & Collaboration
 The main dataset is saved as:
 * **[dhivehi_language_comparision.csv](dhivehi_language_comparision.csv)**
+
+To encourage open collaboration, suggestions, and corrections, we also maintain a shared interactive version:
+* **[Google Sheets Comparative Table](https://docs.google.com/spreadsheets/d/1eNV8vGmLK5fiN4gR276K0aZQsV8hcCFjA3XVrmLahTQ/edit)**
+
+Researchers and native speakers are welcome to comment and suggest edits directly on the Google Sheet. These suggestions will be reviewed periodically and manually merged back into the primary CSV file in this repository.
 
 ## Overview
 The dataset is structured around the standard **Swadesh 100-concept list** (originally proposed by Morris Swadesh in 1955) to support comparative-historical linguistics, dialectology, and lexical similarity analyses.
