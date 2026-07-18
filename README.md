@@ -26,6 +26,7 @@ Included Languages & Dialects:
    - **Male'** (Standard Maldivian)
    - **Addu** (Southernmost dialect, known for major phonological shifts)
    - **Huvadhu** (Southern dialect, preserving unique archaic features)
+   - **Fuvahmulah** (Distinct dialect spoken on the isolated island of Fuvahmulah)
 2. **Comparative Languages**:
    - **Sinhala** (Close Relative; Indo-Aryan sibling language)
    - **Malayalam** (Coast Neighbor; Dravidian language with high historical contact)
@@ -47,6 +48,8 @@ Each Dhivehi dialect is split into separate columns for **Latin transliteration*
 | **Addu - Thaana** | Addu dialect term in native Thaana script |
 | **Huvadhu - Latin** | Huvadhu dialect term in Latin transliteration |
 | **Huvadhu - Thaana** | Huvadhu dialect term in native Thaana script |
+| **Fuvahmulah - Latin** | Fuvahmulah dialect term in Latin transliteration |
+| **Fuvahmulah - Thaana** | Fuvahmulah dialect term in native Thaana script |
 | **Sinhala** | Sinhala comparative term(s) in Latin transliteration |
 | **Malayalam** | Malayalam comparative term(s) in Latin transliteration |
 | **Arabic** | Arabic comparative term(s) in Latin transliteration |
