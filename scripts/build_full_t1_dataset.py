@@ -5,7 +5,9 @@ import json
 import os
 import pandas as pd
 
-PDF_PATH = "files/Fritz_Sonja_2002_The_Dhivehi_Language_A_Descriptive_and_Historical.pdf"
+PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+PDF_PATH = os.path.join(PROJECT_ROOT, "data", "references", "Fritz_Sonja_2002_The_Dhivehi_Language_A_Descriptive_and_Historical.pdf")
+EXTRACTIONS_DIR = os.path.join(PROJECT_ROOT, "data", "extractions")
 
 def build_full_dataset():
     doc = fitz.open(PDF_PATH)
@@ -15,7 +17,8 @@ def build_full_dataset():
     extracted_rows = []
     
     # Load pages 2 & 3 exact data from export_p2_p3 as base
-    with open("files/dhivehi_dialect_story_words_page_2_3.json", "r", encoding="utf-8") as f:
+    p2_p3_json = os.path.join(EXTRACTIONS_DIR, "dhivehi_dialect_story_words_page_2_3.json")
+    with open(p2_p3_json, "r", encoding="utf-8") as f:
         base_p2_p3 = json.load(f)
         extracted_rows.extend(base_p2_p3)
         
@@ -103,16 +106,16 @@ def build_full_dataset():
     df = pd.DataFrame(extracted_rows)
     
     # Save CSV
-    csv_t1_path = "files/dhivehi_dialect_story_words_t1_all.csv"
+    csv_t1_path = os.path.join(EXTRACTIONS_DIR, "dhivehi_dialect_story_words_t1_all.csv")
     df.to_csv(csv_t1_path, index=False, encoding="utf-8-sig")
     
     # Save JSON
-    json_t1_path = "files/dhivehi_dialect_story_words_t1_all.json"
+    json_t1_path = os.path.join(EXTRACTIONS_DIR, "dhivehi_dialect_story_words_t1_all.json")
     with open(json_t1_path, "w", encoding="utf-8") as f:
         json.dump(extracted_rows, f, ensure_ascii=False, indent=2)
         
     # Save Markdown
-    md_t1_path = "files/dhivehi_dialect_story_words_t1_all.md"
+    md_t1_path = os.path.join(EXTRACTIONS_DIR, "dhivehi_dialect_story_words_t1_all.md")
     with open(md_t1_path, "w", encoding="utf-8") as f:
         f.write("# Dhivehi Dialects Comparative Dataset - Story T1 (Fiñdanā boñdanā)\n\n")
         f.write("Extracted from Sonja Fritz (2002), *The Dhivehi Language: A Descriptive and Historical Grammar of Maldivian and Its Dialects*, Vol II: Materials.\n\n")
@@ -122,7 +125,7 @@ def build_full_dataset():
         f.write("- **Fua Mulaku Dialect (F)**: Darker Grey (Fuvahmulah Atoll)\n\n")
         f.write("## Complete Comparative Word Extraction Table\n\n")
         f.write(df.to_markdown(index=False))
-        f.write("\n\n---\n*Saved to files directory*\n")
+        f.write("\n\n---\n*Saved to data/extractions directory*\n")
         
     print(f"Full dataset built successfully! {len(extracted_rows)} total word entries across items 1-7.")
     print(f"Files saved: {csv_t1_path}, {json_t1_path}, {md_t1_path}")

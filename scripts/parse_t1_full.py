@@ -5,7 +5,8 @@ import json
 import os
 import pandas as pd
 
-PDF_PATH = "files/Fritz_Sonja_2002_The_Dhivehi_Language_A_Descriptive_and_Historical.pdf"
+PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+PDF_PATH = os.path.join(PROJECT_ROOT, "data", "references", "Fritz_Sonja_2002_The_Dhivehi_Language_A_Descriptive_and_Historical.pdf")
 
 DIALECT_MAP = {
     "M": "Male'",

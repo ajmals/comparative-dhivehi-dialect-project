@@ -1,6 +1,10 @@
 import csv
 import json
+import os
 import pandas as pd
+
+PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+EXTRACTIONS_DIR = os.path.join(PROJECT_ROOT, "data", "extractions")
 
 # Unique word mappings extracted from the story interlinear analysis
 # 4 columns: English, Male, Addu, Fuvahmulah
@@ -44,11 +48,11 @@ df = pd.DataFrame(word_mappings)
 df = df.drop_duplicates(subset=["English", "Male", "Addu", "Fuvahmulah"])
 
 # Save 4-column CSV
-csv_path = "files/dhivehi_dialect_vocabulary_mapping.csv"
+csv_path = os.path.join(EXTRACTIONS_DIR, "dhivehi_dialect_vocabulary_mapping.csv")
 df.to_csv(csv_path, index=False, encoding="utf-8-sig")
 
 # Save 4-column Markdown table
-md_path = "files/dhivehi_dialect_vocabulary_mapping.md"
+md_path = os.path.join(EXTRACTIONS_DIR, "dhivehi_dialect_vocabulary_mapping.md")
 with open(md_path, "w", encoding="utf-8") as f:
     f.write("# Dhivehi Dialects Vocabulary Mapping (4-Column Comparative Table)\n\n")
     f.write("Comparative 4-column alignment of English terms with Male', Addu, and Fuvahmulah dialect equivalents extracted from Sonja Fritz (2002).\n\n")

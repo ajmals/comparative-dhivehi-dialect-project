@@ -183,4 +183,4 @@ Extracted from Sonja Fritz (2002), *The Dhivehi Language: A Descriptive and Hist
 | 7         |           5 |          9 | Fua Mulaku | F              |            6 | kē             | saying                    | VERB    | ABS.               | timā nidanna tan keḍak denna kē.                                              | You (should) give me a (piece of) place for sleeping.’                                                                                     |
 
 ---
-*Saved to files directory*
+*Saved to data/extractions directory*

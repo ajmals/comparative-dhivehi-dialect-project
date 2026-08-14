@@ -69,5 +69,30 @@ Each Dhivehi dialect is split into separate columns for **Latin transliteration*
 
 ---
 
+## Repository Structure
+
+The repository is organized to prioritize linguistic data and comparative tables while keeping technical automation and extraction scripts in a dedicated folder:
+
+```
+├── dhivehi_language_comparision.csv   # Primary master comparative dataset
+├── data/
+│   ├── extractions/                   # Dialect text extractions & vocabulary tables (Fritz 2002)
+│   ├── raw/                           # Raw source wordlists (Swadesh 100/215, Wiktionary modules)
+│   └── references/                    # Reference literature PDFs and scanned materials
+└── scripts/                           # Technical automation, data compilation & ETL scripts
+    ├── requirements.txt               # Script dependencies
+    ├── build_dataset.py               # Master dataset compilation pipeline
+    ├── build_full_t1_dataset.py       # Dialect Story T1 extraction builder
+    ├── create_4col_mapping.py         # 4-column vocabulary mapping generator
+    ├── export_p2_p3.py                # Story T1 baseline word alignment
+    ├── parse_t1_full.py               # Text parsing helper
+    ├── process_pdf.py                 # Concepticon wordlist fetcher
+    └── process_story_words.py         # PDF layout processing tool
+```
+
+---
+
 ## References & Sources
 - **[Swadesh 1955 Concept List (PDF)](https://s3.nexus.mpcdf.mpg.de/eva-dlce-concepticon/Swadesh1955.pdf)**: The original reference paper outlining the 100-concept list (*Towards a satisfactory calibration of glottochronology*, Morris Swadesh, 1955).
+- **Fritz, Sonja (2002)**: *The Dhivehi Language: A Descriptive and Historical Grammar of Maldivian and Its Dialects*, Vol II: Materials.
+

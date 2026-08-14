@@ -1,14 +1,7 @@
-# Python virtual environment
+# Python environment & cache
 .venv/
 __pycache__/
+*.pyc
 
-# Python build and helper scripts
-build_dataset.py
-process_pdf.py
-
-# Raw Swadesh source downloads
-swadesh_1955_100.csv
-swadesh_1955_215.csv
-
-# Temporary files
-*.lua
+# macOS metadata
+.DS_Store

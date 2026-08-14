@@ -4,6 +4,9 @@ import os
 import pandas as pd
 import fitz
 
+PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+EXTRACTIONS_DIR = os.path.join(PROJECT_ROOT, "data", "extractions")
+
 # Define data structure for pages 2 & 3 (PDF pages 6 & 7)
 p2_p3_data = [
     # Item 1 - Book Page 2 (PDF Page 6)
@@ -133,16 +136,16 @@ p2_p3_data = [
 df_p2_p3 = pd.DataFrame(p2_p3_data)
 
 # Save CSV
-csv_p2_p3_path = "files/dhivehi_dialect_story_words_page_2_3.csv"
+csv_p2_p3_path = os.path.join(EXTRACTIONS_DIR, "dhivehi_dialect_story_words_page_2_3.csv")
 df_p2_p3.to_csv(csv_p2_p3_path, index=False, encoding="utf-8-sig")
 
 # Save JSON
-json_p2_p3_path = "files/dhivehi_dialect_story_words_page_2_3.json"
+json_p2_p3_path = os.path.join(EXTRACTIONS_DIR, "dhivehi_dialect_story_words_page_2_3.json")
 with open(json_p2_p3_path, "w", encoding="utf-8") as f:
     json.dump(p2_p3_data, f, ensure_ascii=False, indent=2)
 
 # Generate Markdown file
-md_p2_p3_path = "files/dhivehi_dialect_story_words_page_2_3.md"
+md_p2_p3_path = os.path.join(EXTRACTIONS_DIR, "dhivehi_dialect_story_words_page_2_3.md")
 with open(md_p2_p3_path, "w", encoding="utf-8") as f:
     f.write("# Dhivehi Dialect Word Extraction - Story T1 (Book Pages 2 & 3 / PDF Pages 6 & 7)\n\n")
     f.write("This table extracts every Dhivehi word, its dialect variant, English gloss, Part of Speech (POS), grammatical tag, full sentence context, and sentence-level English translation from Sonja Fritz (2002), *The Dhivehi Language*, Vol II: Materials.\n\n")
