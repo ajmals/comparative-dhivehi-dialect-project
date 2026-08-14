@@ -19,7 +19,7 @@ Anyone is free to comment and suggest edits on the Google Sheet. These suggestio
 ---
 
 ## Overview
-The dataset compares standard Dhivehi vocabulary across different regional dialects and relative/neighboring languages based on the standard 100-concept Swadesh list (originally proposed by Morris Swadesh in 1955).
+The dataset provides a standardized comparative vocabulary across regional Dhivehi dialects and relative/neighboring languages. The schema supports multiple comparative lists—including the classic Swadesh lists (Swadesh 100 / 215), linguistic text extracts (such as Sonja Fritz 2002 dialect stories), thematic domain lists, and custom vocabulary.
 
 Included Languages & Dialects:
 1. **Dhivehi Dialects**:
@@ -38,21 +38,24 @@ Each Dhivehi dialect is split into separate columns for **Latin transliteration*
 
 ## Column Descriptions
 
-| Column Name | Description |
-| :--- | :--- |
-| **Concept ID** | Three-digit unique identifier for the Swadesh concept (001–100) |
-| **English** | The reference English concept term |
-| **Male' - Latin** | Standard Maldivian term in Latin transliteration |
-| **Male' - Thaana** | Standard Maldivian term in native Thaana script |
-| **Addu - Latin** | Addu dialect term in Latin transliteration |
-| **Addu - Thaana** | Addu dialect term in native Thaana script |
-| **Huvadhu - Latin** | Huvadhu dialect term in Latin transliteration |
-| **Huvadhu - Thaana** | Huvadhu dialect term in native Thaana script |
-| **Fuvahmulah - Latin** | Fuvahmulah dialect term in Latin transliteration |
-| **Fuvahmulah - Thaana** | Fuvahmulah dialect term in native Thaana script |
-| **Sinhala** | Sinhala comparative term(s) in Latin transliteration |
-| **Malayalam** | Malayalam comparative term(s) in Latin transliteration |
-| **Arabic** | Arabic comparative term(s) in Latin transliteration |
+| Column Name | Description | Example |
+| :--- | :--- | :--- |
+| **ID** | Unique identifier with list-specific prefix | `SW100-001`, `SW215-011`, `FRZ-001` |
+| **Word List** | Source or reference wordlist | `Swadesh 100`, `Swadesh 215`, `Fritz 2002 Texts` |
+| **Category** | Semantic domain / lexical category | `Body Parts & Substances`, `Animals`, `Plants & Plant Parts` |
+| **English** | The reference English concept or gloss term | `all`, `bark`, `house` |
+| **Male' - Latin** | Standard Maldivian term in Latin transliteration | `Hurihaa` |
+| **Male' - Thaana** | Standard Maldivian term in native Thaana script | `ހުރިހާ` |
+| **Addu - Latin** | Addu dialect term in Latin transliteration | `Hurihaa` |
+| **Addu - Thaana** | Addu dialect term in native Thaana script | `ހުރިހާ` |
+| **Huvadhu - Latin** | Huvadhu dialect term in Latin transliteration | `Hurihaa` |
+| **Huvadhu - Thaana** | Huvadhu dialect term in native Thaana script | `ހުރިހާ` |
+| **Fuvahmulah - Latin** | Fuvahmulah dialect term in Latin transliteration | `fiñdanu` |
+| **Fuvahmulah - Thaana** | Fuvahmulah dialect term in native Thaana script | `ފިނދަނު` |
+| **Sinhala** | Sinhala comparative term(s) in Latin transliteration | `Hama / Òkkòma` |
+| **Malayalam** | Malayalam comparative term(s) in Latin transliteration | `Èllāṃ / Sarvva` |
+| **Arabic** | Arabic comparative term(s) in Latin transliteration | `Kulla` |
+| **Notes** | Optional contextual, grammatical, or source notes | `Fritz (2002) p.2` |
 
 *Note: Where multiple words correspond to a single concept, they are separated by a slash (` / `).*
 
