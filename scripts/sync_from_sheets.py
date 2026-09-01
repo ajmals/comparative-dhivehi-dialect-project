@@ -16,6 +16,9 @@ PROJECT_ROOT = Path(__file__).resolve().parent.parent
 TARGET_CSV = PROJECT_ROOT / "dhivehi_language_comparision.csv"
 
 
+import csv
+import io
+
 def sync():
     print(f"Fetching data from Google Sheets (GID: {GID})...")
     req = urllib.request.Request(EXPORT_URL, headers={"User-Agent": "Mozilla/5.0"})
@@ -32,8 +35,14 @@ def sync():
         print("Error: Downloaded content does not appear to be a valid comparative dataset CSV.", file=sys.stderr)
         sys.exit(1)
 
+    # Validate header and structure
+    reader = csv.reader(io.StringIO(content))
+    headers = next(reader, [])
+    row_count = sum(1 for _ in reader)
+
     TARGET_CSV.write_text(content, encoding="utf-8")
-    print(f"Successfully synced {len(lines) - 1} records to {TARGET_CSV.name}!")
+    print(f"Successfully synced {row_count} records ({len(headers)} columns) to {TARGET_CSV.name}!")
+    print(f"Columns: {', '.join(headers)}")
 
 
 if __name__ == "__main__":

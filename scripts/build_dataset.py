@@ -530,6 +530,8 @@ for word_info in sw100:
         huvadhu_thaana,
         "",  # Fuvahmulah - Latin
         "",  # Fuvahmulah - Thaana
+        "",  # Maliku - Latin
+        "",  # Maliku - Thaana
         si_display,
         ml_display,
         ar_display,
@@ -550,6 +552,8 @@ headers = [
     "Huvadhu - Thaana",
     "Fuvahmulah - Latin",
     "Fuvahmulah - Thaana",
+    "Maliku - Latin",
+    "Maliku - Thaana",
     "Sinhala",
     "Malayalam",
     "Arabic",

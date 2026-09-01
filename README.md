@@ -1,6 +1,6 @@
 # Comparative Dhivehi Dialect Project
 
-Welcome to the **Comparative Dhivehi Dialect Project**! This is an open-source, community-driven initiative aiming to map, preserve, and analyze the regional dialects of the Dhivehi (Maldivian) language alongside its close relative and neighboring languages.
+Welcome to the **Comparative Dhivehi Dialect Project**! This is an open-source, community-driven initiative dedicated to mapping, preserving, and comparing all regional dialects of the **Dhivehi (Maldivian)** language with each other, using **Male' (Standard Dhivehi)** as the primary anchor.
 
 All data in this repository is completely free, open, and unrestricted for anyone to use, share, and build upon—whether for academic linguistic research, language learning tools, or computational NLP applications.
 
@@ -11,7 +11,7 @@ The primary dataset is compiled as a clean CSV file:
 * **[dhivehi_language_comparision.csv](dhivehi_language_comparision.csv)**
 
 ### Open Collaboration
-Language changes, dialects are diverse, and corrections are always welcome! If you spot a mistake, want to suggest a better term, or wish to contribute new words, you can collaborate directly with us:
+Language changes, dialects are diverse, and corrections are always welcome! If you spot a mistake, want to suggest a better term, or wish to contribute new words or dialect variants, you can collaborate directly with us:
 * **[Google Sheets Comparative Table](https://docs.google.com/spreadsheets/d/1eNV8vGmLK5fiN4gR276K0aZQsV8hcCFjA3XVrmLahTQ/edit)**
 
 Anyone is free to comment and suggest edits on the Google Sheet. These suggestions are reviewed periodically and manually merged back into the master CSV file in this repository.
@@ -19,18 +19,23 @@ Anyone is free to comment and suggest edits on the Google Sheet. These suggestio
 ---
 
 ## Overview
-The dataset provides a standardized comparative vocabulary across regional Dhivehi dialects and relative/neighboring languages. The schema supports multiple comparative lists—including the classic Swadesh lists (Swadesh 100 / 215), linguistic text extracts (such as Sonja Fritz 2002 dialect stories), thematic domain lists, and custom vocabulary.
+The core mission of this project is the **comprehensive comparison of all Maldivian dialects with each other**. **Male' dialect** serves as the primary baseline and reference standard (being the most widely spoken and standardized national dialect), against which regional dialect variations across the archipelago and Minicoy are mapped.
 
-Included Languages & Dialects:
-1. **Dhivehi Dialects**:
-   - **Male'** (Standard Maldivian)
-   - **Addu** (Southernmost dialect, known for major phonological shifts)
-   - **Huvadhu** (Southern dialect, preserving unique archaic features)
-   - **Fuvahmulah** (Distinct dialect spoken on the isolated island of Fuvahmulah)
-2. **Comparative Languages**:
-   - **Sinhala** (Close Relative; Indo-Aryan sibling language)
-   - **Malayalam** (Coast Neighbor; Dravidian language with high historical contact)
-   - **Arabic** (Significant historical superstrate influence)
+In addition to intra-Dhivehi dialectal comparisons, external languages (Sinhala, Malayalam, Arabic) are included as supplementary reference points for cognate tracking, etymology, and historical contact analysis.
+
+### Dialects & Languages Covered:
+1. **Maldivian (Dhivehi) Dialects (Primary Focus)**:
+   - **Male'** (Standard Dhivehi — primary reference dialect)
+   - **Addu** (Southernmost atoll dialect, characterized by distinct phonetic shifts)
+   - **Huvadhu** (Southern dialect, preserving unique archaic morphology and phonology)
+   - **Fuvahmulah** (Distinctive dialect of the isolated central-southern single-island atoll)
+   - **Maliku / Minicoy (Mahl)** (Spoken on Minicoy Island in Lakshadweep; the northernmost Dhivehi variety with unique phonology and contact influences)
+   - *(Designed to be extensible to other regional and island dialect varieties)*
+
+2. **Supplementary Comparative Languages (Reference)**:
+   - **Sinhala** (Close Indo-Aryan sibling language for cognate tracking)
+   - **Malayalam** (Neighboring Dravidian language with historical maritime and regional contact)
+   - **Arabic** (Historical religious and cultural superstrate influence)
 
 Each Dhivehi dialect is split into separate columns for **Latin transliteration** and the **native Thaana script** to support phonological, phonetic, and orthographic analyses. Comparison languages are provided in standardized Latin script (ISO/IAST) to maintain clarity and focus on the Maldivian variants.
 
@@ -52,6 +57,8 @@ Each Dhivehi dialect is split into separate columns for **Latin transliteration*
 | **Huvadhu - Thaana** | Huvadhu dialect term in native Thaana script | `ހުރިހާ` |
 | **Fuvahmulah - Latin** | Fuvahmulah dialect term in Latin transliteration | `fiñdanu` |
 | **Fuvahmulah - Thaana** | Fuvahmulah dialect term in native Thaana script | `ފިނދަނު` |
+| **Maliku - Latin** | Maliku / Minicoy (Mahl) term in Latin transliteration | `Hurihaa` |
+| **Maliku - Thaana** | Maliku / Minicoy (Mahl) term in native Thaana script | `ހުރިހާ` |
 | **Sinhala** | Sinhala comparative term(s) in Latin transliteration | `Hama / Òkkòma` |
 | **Malayalam** | Malayalam comparative term(s) in Latin transliteration | `Èllāṃ / Sarvva` |
 | **Arabic** | Arabic comparative term(s) in Latin transliteration | `Kulla` |
