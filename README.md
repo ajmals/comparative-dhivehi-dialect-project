@@ -6,9 +6,9 @@ All data in this repository is completely free, open, and unrestricted for anyon
 
 ---
 
-## Dataset File & Collaboration
-The primary dataset is compiled as a clean CSV file:
-* **[dhivehi_language_comparision.csv](dhivehi_language_comparision.csv)**
+## Interactive Web Explorer & Collaboration
+* 🌐 **[Live Web App (GitHub Pages)](https://ajmals.github.io/comparative-dhivehi-dialect-project/)** — Interactive explorer with instant search, script toggles (Thaana / Latin), dialect comparison cards, and filters.
+* 📊 **[dhivehi_language_comparision.csv](dhivehi_language_comparision.csv)** — Master dataset file.
 
 ### Open Collaboration
 Language changes, dialects are diverse, and corrections are always welcome! If you spot a mistake, want to suggest a better term, or wish to contribute new words or dialect variants, you can collaborate directly with us:

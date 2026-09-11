@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Comparative Dhivehi Dialect Explorer | ދިވެހި ބަހުރުވަތައް</title>
+  <meta name="description" content="Explore and compare regional dialects of Dhivehi (Maldivian) including Male', Addu, Huvadhu, Fuvahmulah, and Maliku (Mahl), alongside Sinhala, Malayalam, and Arabic cognates.">
+  <meta name="keywords" content="Dhivehi, Maldivian, Dialects, Thaana, Addu, Huvadhu, Fuvahmulah, Maliku, Linguistics, Swadesh List">
+  
+  <!-- Open Graph -->
+  <meta property="og:title" content="Comparative Dhivehi Dialect Explorer">
+  <meta property="og:description" content="Interactive linguistic explorer for regional Dhivehi dialects and cognate languages.">
+  <meta property="og:type" content="website">
+
+  <!-- Google Fonts: Inter, Space Grotesk, Noto Sans Thaana -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+Thaana:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+
+  <!-- PapaParse for robust CSV handling -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+
+  <!-- Main Stylesheet -->
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+  <!-- Header / Navigation Bar -->
+  <header class="app-header">
+    <div class="header-container">
+      <div class="brand">
+        <div class="brand-badge">MV</div>
+        <div class="brand-titles">
+          <h1>Comparative Dhivehi Dialects <span class="thaana-brand">ދިވެހި ބަހުރުވަތައް</span></h1>
+          <p class="subtitle">An open linguistic database mapping regional Dhivehi varieties & cognates</p>
+        </div>
+      </div>
+      
+      <div class="header-actions">
+        <button id="themeToggleBtn" class="btn btn-icon" title="Toggle Dark/Light Mode" aria-label="Toggle theme">
+          <svg class="icon sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+          <svg class="icon moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        </button>
+
+        <a href="https://github.com/ajmals/comparative-dhivehi-dialect-project" target="_blank" rel="noopener" class="btn btn-secondary">
+          <svg class="icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+          <span>GitHub</span>
+        </a>
+
+        <a href="https://docs.google.com/spreadsheets/d/1eNV8vGmLK5fiN4gR276K0aZQsV8hcCFjA3XVrmLahTQ/edit" target="_blank" rel="noopener" class="btn btn-primary">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+          <span>Contribute</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="main-content">
+    <!-- Hero / Stats Bar -->
+    <section class="stats-banner">
+      <div class="stat-card">
+        <span class="stat-num" id="statTotalWords">0</span>
+        <span class="stat-label">Total Concepts</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-num" id="statDialects">5</span>
+        <span class="stat-label">Dhivehi Dialects</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-num" id="statCategories">0</span>
+        <span class="stat-label">Semantic Categories</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-num" id="statCognates">3</span>
+        <span class="stat-label">Cognate Languages</span>
+      </div>
+    </section>
+
+    <!-- Controls & Filters Section -->
+    <section class="controls-panel">
+      <!-- Top Row: Search & View Switcher -->
+      <div class="search-and-views">
+        <div class="search-box">
+          <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input type="text" id="searchInput" placeholder="Search English, Thaana (ދިވެހި), Latin, Sinhala, Arabic..." aria-label="Search dataset" autofocus>
+          <button id="clearSearchBtn" class="clear-btn" title="Clear search" style="display:none;">&times;</button>
+        </div>
+
+        <div class="view-and-script-toggles">
+          <!-- Script Display Mode -->
+          <div class="toggle-group" id="scriptModeGroup" title="Select script display format">
+            <button class="toggle-btn active" data-script="both">Both</button>
+            <button class="toggle-btn" data-script="thaana">Thaana</button>
+            <button class="toggle-btn" data-script="latin">Latin</button>
+          </div>
+
+          <!-- View Mode (Table / Cards) -->
+          <div class="toggle-group" id="viewModeGroup">
+            <button class="toggle-btn active" data-view="table" title="Table View" aria-label="Table View">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3h18v18H3zM3 9h18M3 15h18M9 3v18M15 3v18"/></svg>
+            </button>
+            <button class="toggle-btn" data-view="cards" title="Cards View" aria-label="Cards View">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+            </button>
+          </div>
+
+          <button id="downloadCsvBtn" class="btn btn-secondary btn-sm" title="Export current filtered view as CSV">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            <span>Export</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Categories Filter Chips -->
+      <div class="category-filters-wrapper">
+        <span class="filter-label">Categories:</span>
+        <div class="category-chips" id="categoryChipsContainer">
+          <button class="chip active" data-category="ALL">All Concepts</button>
+          <!-- Dynamic category chips will be injected here -->
+        </div>
+      </div>
+
+      <!-- Dialect & Language Visibility Columns -->
+      <div class="column-visibility-bar">
+        <span class="filter-label">Visible Dialects & Languages:</span>
+        <div class="col-checkboxes" id="columnCheckboxesContainer">
+          <label class="checkbox-pill"><input type="checkbox" data-col="male" checked> <span>Male' (Std)</span></label>
+          <label class="checkbox-pill"><input type="checkbox" data-col="addu" checked> <span>Addu</span></label>
+          <label class="checkbox-pill"><input type="checkbox" data-col="huvadhu" checked> <span>Huvadhu</span></label>
+          <label class="checkbox-pill"><input type="checkbox" data-col="fuvahmulah" checked> <span>Fuvahmulah</span></label>
+          <label class="checkbox-pill"><input type="checkbox" data-col="maliku" checked> <span>Maliku (Mahl)</span></label>
+          <label class="checkbox-pill ref-pill"><input type="checkbox" data-col="sinhala" checked> <span>Sinhala</span></label>
+          <label class="checkbox-pill ref-pill"><input type="checkbox" data-col="malayalam" checked> <span>Malayalam</span></label>
+          <label class="checkbox-pill ref-pill"><input type="checkbox" data-col="arabic" checked> <span>Arabic</span></label>
+        </div>
+      </div>
+    </section>
+
+    <!-- Results Status Bar -->
+    <div class="results-bar">
+      <span id="resultsCount">Loading dataset...</span>
+      <div class="active-filters" id="activeFiltersSummary"></div>
+    </div>
+
+    <!-- Data Display Area -->
+    <section class="data-container" id="dataContainer">
+      <!-- Loading Spinner -->
+      <div id="loadingState" class="loading-state">
+        <div class="spinner"></div>
+        <p>Loading comparative dialect data...</p>
+      </div>
+
+      <!-- Empty State -->
+      <div id="emptyState" class="empty-state" style="display:none;">
+        <div class="empty-icon">🔍</div>
+        <h3>No matching words found</h3>
+        <p>Try clearing your search term or selecting "All Concepts".</p>
+        <button id="resetFiltersBtn" class="btn btn-secondary">Reset All Filters</button>
+      </div>
+
+      <!-- Table View -->
+      <div id="tableViewWrapper" class="table-responsive" style="display:none;">
+        <table class="data-table" id="dialectTable">
+          <thead>
+            <tr class="header-group-row">
+              <th colspan="3" class="th-group th-group-concept">Concept & Gloss</th>
+              <th colspan="5" class="th-group th-group-dialects">Maldivian (Dhivehi) Dialects</th>
+              <th colspan="3" class="th-group th-group-cognates">Comparative Reference Languages</th>
+              <th class="th-group th-group-actions">Actions</th>
+            </tr>
+            <tr class="header-columns-row">
+              <th class="th-id" data-sort="id">ID <span class="sort-indicator"></span></th>
+              <th class="th-category" data-sort="category">Category <span class="sort-indicator"></span></th>
+              <th class="th-english" data-sort="english">English Gloss <span class="sort-indicator"></span></th>
+              <th class="th-dialect col-male" data-sort="male"><span class="dialect-dot dot-male"></span>Male' (Std) <span class="sort-indicator"></span></th>
+              <th class="th-dialect col-addu" data-sort="addu"><span class="dialect-dot dot-addu"></span>Addu <span class="sort-indicator"></span></th>
+              <th class="th-dialect col-huvadhu" data-sort="huvadhu"><span class="dialect-dot dot-huvadhu"></span>Huvadhu <span class="sort-indicator"></span></th>
+              <th class="th-dialect col-fuvahmulah" data-sort="fuvahmulah"><span class="dialect-dot dot-fuvahmulah"></span>Fuvahmulah <span class="sort-indicator"></span></th>
+              <th class="th-dialect col-maliku" data-sort="maliku"><span class="dialect-dot dot-maliku"></span>Maliku (Mahl) <span class="sort-indicator"></span></th>
+              <th class="th-ref col-sinhala" data-sort="sinhala"><span class="dialect-dot dot-sinhala"></span>Sinhala <span class="sort-indicator"></span></th>
+              <th class="th-ref col-malayalam" data-sort="malayalam"><span class="dialect-dot dot-malayalam"></span>Malayalam <span class="sort-indicator"></span></th>
+              <th class="th-ref col-arabic" data-sort="arabic"><span class="dialect-dot dot-arabic"></span>Arabic <span class="sort-indicator"></span></th>
+              <th class="th-actions">Inspect</th>
+            </tr>
+          </thead>
+          <tbody id="tableBody">
+            <!-- Dynamic table rows -->
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Cards Grid View -->
+      <div id="cardsViewWrapper" class="cards-grid" style="display:none;">
+        <!-- Dynamic card elements -->
+      </div>
+    </section>
+  </main>
+
+  <!-- Word Detail Modal -->
+  <dialog id="wordModal" class="modal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <div>
+          <div class="modal-meta-chips">
+            <span class="badge badge-id" id="modalId">SW100-001</span>
+            <span class="badge badge-category" id="modalCategory">Quantitatives</span>
+            <span class="badge badge-list" id="modalWordList">Swadesh 100</span>
+          </div>
+          <h2 class="modal-title" id="modalEnglish">all</h2>
+        </div>
+        <button id="closeModalBtn" class="close-modal-btn" aria-label="Close modal">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <h4 class="section-title">Maldivian (Dhivehi) Dialects</h4>
+        <div class="modal-dialects-grid" id="modalDialectsGrid">
+          <!-- Dialect comparison cards -->
+        </div>
+
+        <h4 class="section-title">Comparative & Cognate Languages</h4>
+        <div class="modal-cognates-grid" id="modalCognatesGrid">
+          <!-- Cognates comparison cards -->
+        </div>
+
+        <div id="modalNotesSection" class="modal-notes-section" style="display:none;">
+          <h4 class="section-title">Linguistic Notes</h4>
+          <p id="modalNotes" class="notes-content"></p>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button id="copyJsonBtn" class="btn btn-secondary btn-sm">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          <span>Copy JSON</span>
+        </button>
+        <a id="suggestEditLink" href="https://docs.google.com/spreadsheets/d/1eNV8vGmLK5fiN4gR276K0aZQsV8hcCFjA3XVrmLahTQ/edit" target="_blank" rel="noopener" class="btn btn-primary btn-sm">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+          <span>Suggest Edit / Correction</span>
+        </a>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- Toast Notification -->
+  <div id="toast" class="toast"></div>
+
+  <!-- Main JavaScript Application -->
+  <script src="assets/js/app.js"></script>
+</body>
+</html>
