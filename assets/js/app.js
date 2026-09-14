@@ -259,21 +259,19 @@ function renderCurrentView() {
 }
 
 function renderTable() {
-  updateTableColumnVisibility();
-  
   DOM.tableBody.innerHTML = state.filteredData.map(item => `
     <tr data-id="${item.id}" onclick="window.appOpenModal('${item.id}')" style="cursor:pointer;">
       <td><span class="badge badge-id">${escapeHtml(item.id)}</span></td>
       <td><span class="badge badge-category">${escapeHtml(item.category)}</span></td>
       <td style="font-weight:600; color:var(--text-main);">${escapeHtml(item.english)}</td>
-      <td class="col-male">${renderDialectCell(item.maleThaana, item.maleLatin)}</td>
-      <td class="col-addu">${renderDialectCell(item.adduThaana, item.adduLatin)}</td>
-      <td class="col-huvadhu">${renderDialectCell(item.huvadhuThaana, item.huvadhuLatin)}</td>
-      <td class="col-fuvahmulah">${renderDialectCell(item.fuvahmulahThaana, item.fuvahmulahLatin)}</td>
-      <td class="col-maliku">${renderDialectCell(item.malikuThaana, item.malikuLatin)}</td>
-      <td class="col-sinhala">${renderCognateCell(item.sinhala)}</td>
-      <td class="col-malayalam">${renderCognateCell(item.malayalam)}</td>
-      <td class="col-arabic">${renderCognateCell(item.arabic)}</td>
+      <td class="col-male" ${state.visibleCols.male ? '' : 'style="display:none;"'}>${renderDialectCell(item.maleThaana, item.maleLatin)}</td>
+      <td class="col-addu" ${state.visibleCols.addu ? '' : 'style="display:none;"'}>${renderDialectCell(item.adduThaana, item.adduLatin)}</td>
+      <td class="col-huvadhu" ${state.visibleCols.huvadhu ? '' : 'style="display:none;"'}>${renderDialectCell(item.huvadhuThaana, item.huvadhuLatin)}</td>
+      <td class="col-fuvahmulah" ${state.visibleCols.fuvahmulah ? '' : 'style="display:none;"'}>${renderDialectCell(item.fuvahmulahThaana, item.fuvahmulahLatin)}</td>
+      <td class="col-maliku" ${state.visibleCols.maliku ? '' : 'style="display:none;"'}>${renderDialectCell(item.malikuThaana, item.malikuLatin)}</td>
+      <td class="col-sinhala" ${state.visibleCols.sinhala ? '' : 'style="display:none;"'}>${renderCognateCell(item.sinhala)}</td>
+      <td class="col-malayalam" ${state.visibleCols.malayalam ? '' : 'style="display:none;"'}>${renderCognateCell(item.malayalam)}</td>
+      <td class="col-arabic" ${state.visibleCols.arabic ? '' : 'style="display:none;"'}>${renderCognateCell(item.arabic)}</td>
       <td>
         <button class="btn btn-secondary btn-sm" onclick="event.stopPropagation(); window.appOpenModal('${item.id}')" title="Inspect word">
           <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
@@ -281,6 +279,8 @@ function renderTable() {
       </td>
     </tr>
   `).join('');
+
+  updateTableColumnVisibility();
 }
 
 function renderCards() {
@@ -324,6 +324,24 @@ function renderCards() {
           <div class="card-dialect-row" style="border-left-color: var(--col-maliku);">
             <span class="card-dialect-name">Maliku</span>
             <div style="text-align:right;">${renderDialectCell(item.malikuThaana, item.malikuLatin)}</div>
+          </div>` : ''}
+
+        ${state.visibleCols.sinhala && item.sinhala ? `
+          <div class="card-dialect-row" style="border-left-color: var(--col-sinhala);">
+            <span class="card-dialect-name">Sinhala</span>
+            <div style="text-align:right;">${renderCognateCell(item.sinhala)}</div>
+          </div>` : ''}
+
+        ${state.visibleCols.malayalam && item.malayalam ? `
+          <div class="card-dialect-row" style="border-left-color: var(--col-malayalam);">
+            <span class="card-dialect-name">Malayalam</span>
+            <div style="text-align:right;">${renderCognateCell(item.malayalam)}</div>
+          </div>` : ''}
+
+        ${state.visibleCols.arabic && item.arabic ? `
+          <div class="card-dialect-row" style="border-left-color: var(--col-arabic);">
+            <span class="card-dialect-name">Arabic</span>
+            <div style="text-align:right;">${renderCognateCell(item.arabic)}</div>
           </div>` : ''}
       </div>
     </div>
