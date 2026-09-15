@@ -33,6 +33,7 @@ FOREIGN_LANGUAGES = [
 
 ALL_ENTITIES = DHIVEHI_DIALECTS + FOREIGN_LANGUAGES
 DHIVEHI_KEYS = [name for name, _ in DHIVEHI_DIALECTS]
+FOREIGN_KEYS = [name for name, _ in FOREIGN_LANGUAGES]
 ALL_KEYS = [name for name, _ in ALL_ENTITIES]
 
 
@@ -278,9 +279,13 @@ def process_dataset(input_csv: str, output_dir: str):
 
         concept_wide_rows.append(wide_row)
 
-        # 3. Build Long Pairwise Records
+        # 3. Build Long Pairwise Records (Focus on Dhivehi-Dhivehi and Dhivehi-Foreign only)
         all_unique_pairs = list(combinations(ALL_KEYS, 2))
         for d1, d2 in all_unique_pairs:
+            # Exclude foreign-to-foreign pairs
+            if d1 in FOREIGN_KEYS and d2 in FOREIGN_KEYS:
+                continue
+
             match = find_best_match(entity_words[d1], entity_words[d2])
             if match:
                 is_dhivehi_pair = (d1 in DHIVEHI_KEYS and d2 in DHIVEHI_KEYS)

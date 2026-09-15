@@ -605,6 +605,8 @@ function openModal(item) {
       ALL_COMPARE_ENTITIES.forEach(e2 => {
         if (e1.key === e2.key) {
           matrixTableHtml += `<td class="matrix-cell cell-self">100%</td>`;
+        } else if (!e1.isDhivehi && !e2.isDhivehi) {
+          matrixTableHtml += `<td class="matrix-cell cell-empty" title="Foreign-to-foreign comparison excluded">—</td>`;
         } else {
           const m = allPairs.matrix[e1.key][e2.key];
           if (m) {
@@ -914,6 +916,10 @@ function computeConceptAllPairs(item) {
 
     for (let j = i + 1; j < ALL_COMPARE_ENTITIES.length; j++) {
       const e2 = ALL_COMPARE_ENTITIES[j];
+      // Exclude foreign-to-foreign comparisons
+      if (!e1.isDhivehi && !e2.isDhivehi) {
+        continue;
+      }
       const words2 = entityWords[e2.key];
 
       const match = findBestMatch(words1, words2);
@@ -936,7 +942,7 @@ function computeConceptAllPairs(item) {
           closestDhivehiPair = pairObj;
         }
 
-        // Track closest overall pair
+        // Track closest overall pair (Dhivehi-Dhivehi or Dhivehi-Foreign)
         if (match.simPct > maxOverallSim) {
           maxOverallSim = match.simPct;
           closestOverallPair = pairObj;
@@ -971,6 +977,9 @@ function computeAnchorProximity(item, anchorKey) {
 
   ALL_COMPARE_ENTITIES.forEach(entity => {
     if (entity.key === anchorKey) return;
+    // Exclude foreign-to-foreign comparisons
+    if (!anchorEntity.isDhivehi && !entity.isDhivehi) return;
+
     const targetWords = allData.entityWords[entity.key] || [];
     const match = findBestMatch(anchorWords, targetWords);
 
@@ -1050,6 +1059,7 @@ function renderProximityMacroMatrix() {
       const words1 = parseWordList(item.raw[e1.latinCol]);
       ALL_COMPARE_ENTITIES.forEach(e2 => {
         if (e1.key >= e2.key) return;
+        if (!e1.isDhivehi && !e2.isDhivehi) return; // Exclude foreign-to-foreign
         const words2 = parseWordList(item.raw[e2.latinCol]);
         const match = findBestMatch(words1, words2);
         if (match) {
@@ -1116,6 +1126,8 @@ function renderProximityMacroMatrix() {
       ALL_COMPARE_ENTITIES.forEach(e2 => {
         if (e1.key === e2.key) {
           tableHtml += `<td class="matrix-cell cell-self">100%</td>`;
+        } else if (!e1.isDhivehi && !e2.isDhivehi) {
+          tableHtml += `<td class="matrix-cell cell-empty" title="Foreign-to-foreign comparison excluded">—</td>`;
         } else {
           const cell = accum[e1.key][e2.key];
           if (cell.count > 0) {
