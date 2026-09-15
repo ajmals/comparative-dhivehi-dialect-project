@@ -23,6 +23,10 @@ const state = {
     arabic: true,
   },
   theme: localStorage.getItem('theme') || 'dark',
+  activeTab: 'explorer', // 'explorer' | 'proximity'
+  proxSearch: '',
+  proxCategory: 'ALL',
+  proxSort: 'id-asc',
 };
 
 // Dialect metadata mapping
@@ -73,6 +77,19 @@ const DOM = {
   modalNotes: document.getElementById('modalNotes'),
   copyJsonBtn: document.getElementById('copyJsonBtn'),
   toast: document.getElementById('toast'),
+  // Navigation Tabs
+  navTabExplorer: document.getElementById('navTabExplorer'),
+  navTabProximity: document.getElementById('navTabProximity'),
+  tabContentExplorer: document.getElementById('tabContentExplorer'),
+  tabContentProximity: document.getElementById('tabContentProximity'),
+  // Proximity View Elements
+  proximitySummaryCards: document.getElementById('proximitySummaryCards'),
+  matrixTableContainer: document.getElementById('matrixTableContainer'),
+  proxSearchInput: document.getElementById('proxSearchInput'),
+  proxCategorySelect: document.getElementById('proxCategorySelect'),
+  proxSortSelect: document.getElementById('proxSortSelect'),
+  proxResultsCount: document.getElementById('proxResultsCount'),
+  conceptProxGrid: document.getElementById('conceptProxGrid'),
 };
 
 let currentModalItem = null;
@@ -673,6 +690,34 @@ function setupEventListeners() {
       .catch(() => showToast('Failed to copy JSON.'));
   });
 
+  // Navigation Tabs
+  if (DOM.navTabExplorer && DOM.navTabProximity) {
+    DOM.navTabExplorer.addEventListener('click', () => switchTab('explorer'));
+    DOM.navTabProximity.addEventListener('click', () => switchTab('proximity'));
+  }
+
+  // Proximity View Controls
+  if (DOM.proxSearchInput) {
+    DOM.proxSearchInput.addEventListener('input', (e) => {
+      state.proxSearch = e.target.value.toLowerCase().trim();
+      renderConceptProximityGrid();
+    });
+  }
+
+  if (DOM.proxCategorySelect) {
+    DOM.proxCategorySelect.addEventListener('change', (e) => {
+      state.proxCategory = e.target.value;
+      renderConceptProximityGrid();
+    });
+  }
+
+  if (DOM.proxSortSelect) {
+    DOM.proxSortSelect.addEventListener('change', (e) => {
+      state.proxSort = e.target.value;
+      renderConceptProximityGrid();
+    });
+  }
+
   // Reset filters
   DOM.resetFiltersBtn.addEventListener('click', () => {
     DOM.searchInput.value = '';
@@ -682,6 +727,392 @@ function setupEventListeners() {
     populateCategories();
     applyFilters();
   });
+}
+
+function switchTab(tabName) {
+  state.activeTab = tabName;
+  if (tabName === 'proximity') {
+    DOM.navTabExplorer.classList.remove('active');
+    DOM.navTabProximity.classList.add('active');
+    DOM.tabContentExplorer.style.display = 'none';
+    DOM.tabContentProximity.style.display = 'block';
+    renderProximityView();
+  } else {
+    DOM.navTabProximity.classList.remove('active');
+    DOM.navTabExplorer.classList.add('active');
+    DOM.tabContentProximity.style.display = 'none';
+    DOM.tabContentExplorer.style.display = 'block';
+  }
+  updateUrlParams();
+}
+
+// ==========================================
+// Distance Algorithms & Proximity Logic
+// ==========================================
+function levenshteinDistance(s1, s2) {
+  if (s1 === s2) return 0;
+  if (!s1) return s2.length;
+  if (!s2) return s1.length;
+  const v0 = Array.from({ length: s2.length + 1 }, (_, i) => i);
+  const v1 = new Array(s2.length + 1).fill(0);
+  for (let i = 0; i < s1.length; i++) {
+    v1[0] = i + 1;
+    for (let j = 0; j < s2.length; j++) {
+      const cost = s1[i] === s2[j] ? 0 : 1;
+      v1[j + 1] = Math.min(v1[j] + 1, v0[j + 1] + 1, v0[j] + cost);
+    }
+    for (let j = 0; j <= s2.length; j++) v0[j] = v1[j];
+  }
+  return v0[s2.length];
+}
+
+function cleanWordToken(token) {
+  if (!token) return '';
+  let t = token.replace(/\(.*?\)/g, '');
+  t = t.replace(/^[\s,?!.*"'[\]\-–—]+|[\s,?!.*"'[\]\-–—]+$/g, '');
+  if (['-', '--', '---', 'N/A', 'n/a', '?', '???'].includes(t)) return '';
+  return t.trim();
+}
+
+function parseWordList(cellValue) {
+  if (!cellValue) return [];
+  return cellValue.split('/')
+    .map(cleanWordToken)
+    .filter(w => w.length > 0);
+}
+
+function findBestMatch(wordsA, wordsB) {
+  if (!wordsA || !wordsA.length || !wordsB || !wordsB.length) return null;
+  let best = null;
+  let minNorm = Infinity;
+  let minRaw = Infinity;
+
+  for (const wa of wordsA) {
+    for (const wb of wordsB) {
+      const waLower = wa.toLowerCase();
+      const wbLower = wb.toLowerCase();
+      const rawDist = levenshteinDistance(waLower, wbLower);
+      const maxLen = Math.max(waLower.length, wbLower.length);
+      const normDist = maxLen > 0 ? (rawDist / maxLen) : 0;
+      const simPct = Math.round((1.0 - normDist) * 1000) / 10;
+
+      if (normDist < minNorm || (normDist === minNorm && rawDist < minRaw)) {
+        minNorm = normDist;
+        minRaw = rawDist;
+        best = {
+          wordA: wa,
+          wordB: wb,
+          rawDist,
+          normDist: Math.round(normDist * 10000) / 10000,
+          simPct
+        };
+      }
+    }
+  }
+  return best;
+}
+
+// All varieties to compare
+const ALL_COMPARE_ENTITIES = [
+  { key: 'male', label: "Male' (Std)", latinCol: "Male' - Latin", thaanaCol: "Male' - Thaana", color: 'var(--col-male)', isDhivehi: true },
+  { key: 'addu', label: 'Addu', latinCol: 'Addu - Latin', thaanaCol: 'Addu - Thaana', color: 'var(--col-addu)', isDhivehi: true },
+  { key: 'huvadhu', label: 'Huvadhu', latinCol: 'Huvadhu - Latin', thaanaCol: 'Huvadhu - Thaana', color: 'var(--col-huvadhu)', isDhivehi: true },
+  { key: 'fuvahmulah', label: 'Fuvahmulah', latinCol: 'Fuvahmulah - Latin', thaanaCol: 'Fuvahmulah - Thaana', color: 'var(--col-fuvahmulah)', isDhivehi: true },
+  { key: 'maliku', label: 'Maliku', latinCol: 'Maliku - Latin', thaanaCol: 'Maliku - Thaana', color: 'var(--col-maliku)', isDhivehi: true },
+  { key: 'sinhala', label: 'Sinhala', latinCol: 'Sinhala', color: 'var(--col-sinhala)', isDhivehi: false },
+  { key: 'malayalam', label: 'Malayalam', latinCol: 'Malayalam', color: 'var(--col-malayalam)', isDhivehi: false },
+  { key: 'arabic', label: 'Arabic', latinCol: 'Arabic', color: 'var(--col-arabic)', isDhivehi: false },
+];
+
+function computeConceptProximity(item) {
+  const maleWords = parseWordList(item.raw["Male' - Latin"]);
+  const comparisons = [];
+  let closestDhivehi = null;
+  let maxDhivehiSim = -1;
+
+  ALL_COMPARE_ENTITIES.forEach(entity => {
+    if (entity.key === 'male') return;
+    const targetWords = parseWordList(item.raw[entity.latinCol]);
+    const match = findBestMatch(maleWords, targetWords);
+
+    const comp = {
+      entity,
+      match,
+      hasData: targetWords.length > 0,
+    };
+    comparisons.push(comp);
+
+    if (entity.isDhivehi && match && match.simPct > maxDhivehiSim) {
+      maxDhivehiSim = match.simPct;
+      closestDhivehi = { entity, match };
+    }
+  });
+
+  return {
+    maleWords,
+    comparisons,
+    closestDhivehi,
+    maxDhivehiSim: maxDhivehiSim >= 0 ? maxDhivehiSim : null
+  };
+}
+
+// ==========================================
+// Proximity View Rendering
+// ==========================================
+function renderProximityView() {
+  populateProxCategories();
+  renderProximityMacroMatrix();
+  renderConceptProximityGrid();
+}
+
+function populateProxCategories() {
+  if (!DOM.proxCategorySelect) return;
+  const currentVal = state.proxCategory;
+  const categories = Array.from(new Set(state.data.map(d => d.category).filter(Boolean))).sort();
+  
+  DOM.proxCategorySelect.innerHTML = `<option value="ALL">All Categories (${state.data.length})</option>` +
+    categories.map(cat => {
+      const count = state.data.filter(d => d.category === cat).length;
+      return `<option value="${escapeHtml(cat)}"${cat === currentVal ? ' selected' : ''}>${escapeHtml(cat)} (${count})</option>`;
+    }).join('');
+}
+
+function renderProximityMacroMatrix() {
+  const accum = {};
+  ALL_COMPARE_ENTITIES.forEach(e1 => {
+    accum[e1.key] = {};
+    ALL_COMPARE_ENTITIES.forEach(e2 => {
+      accum[e1.key][e2.key] = { totalSim: 0, count: 0 };
+    });
+  });
+
+  state.data.forEach(item => {
+    ALL_COMPARE_ENTITIES.forEach(e1 => {
+      const words1 = parseWordList(item.raw[e1.latinCol]);
+      ALL_COMPARE_ENTITIES.forEach(e2 => {
+        if (e1.key >= e2.key) return;
+        const words2 = parseWordList(item.raw[e2.latinCol]);
+        const match = findBestMatch(words1, words2);
+        if (match) {
+          accum[e1.key][e2.key].totalSim += match.simPct;
+          accum[e1.key][e2.key].count += 1;
+
+          accum[e2.key][e1.key].totalSim += match.simPct;
+          accum[e2.key][e1.key].count += 1;
+        }
+      });
+    });
+  });
+
+  // Render Highlight Cards
+  const pairsToHighlight = [
+    { a: 'male', b: 'addu', desc: 'Southernmost atoll; high phonological overlap with Standard Male\'' },
+    { a: 'male', b: 'huvadhu', desc: 'Archaic morphology and unique vowel shifts' },
+    { a: 'male', b: 'sinhala', desc: 'Close Indo-Aryan sibling language baseline' },
+  ];
+
+  if (DOM.proximitySummaryCards) {
+    DOM.proximitySummaryCards.innerHTML = pairsToHighlight.map(p => {
+      const entityA = ALL_COMPARE_ENTITIES.find(e => e.key === p.a);
+      const entityB = ALL_COMPARE_ENTITIES.find(e => e.key === p.b);
+      const cell = accum[p.a][p.b];
+      const avgSim = cell.count > 0 ? (cell.totalSim / cell.count).toFixed(1) : '—';
+      const fillPct = cell.count > 0 ? (cell.totalSim / cell.count) : 0;
+      const color = fillPct >= 70 ? 'var(--accent-emerald)' : (fillPct >= 40 ? 'var(--accent-amber)' : 'var(--accent-rose)');
+
+      return `
+        <div class="proximity-summary-card">
+          <div class="summary-card-header">
+            <span class="summary-card-title">${entityA.label} ⟷ ${entityB.label}</span>
+            <span class="badge badge-list">${cell.count} words</span>
+          </div>
+          <div class="summary-card-score">
+            <span>${avgSim}${cell.count > 0 ? '%' : ''}</span>
+            <small>similarity</small>
+          </div>
+          <div class="summary-card-bar-bg">
+            <div class="summary-card-bar-fill" style="width:${fillPct}%; background:${color};"></div>
+          </div>
+          <p class="summary-card-desc">${p.desc}</p>
+        </div>
+      `;
+    }).join('');
+  }
+
+  // Render Heatmap Matrix Table
+  if (DOM.matrixTableContainer) {
+    let tableHtml = `
+      <table class="matrix-table">
+        <thead>
+          <tr>
+            <th>Variety</th>
+            ${ALL_COMPARE_ENTITIES.map(e => `<th>${escapeHtml(e.label)}</th>`).join('')}
+          </tr>
+        </thead>
+        <tbody>
+    `;
+
+    ALL_COMPARE_ENTITIES.forEach(e1 => {
+      tableHtml += `<tr><th>${escapeHtml(e1.label)}</th>`;
+      ALL_COMPARE_ENTITIES.forEach(e2 => {
+        if (e1.key === e2.key) {
+          tableHtml += `<td class="matrix-cell cell-self">100%</td>`;
+        } else {
+          const cell = accum[e1.key][e2.key];
+          if (cell.count > 0) {
+            const avg = (cell.totalSim / cell.count).toFixed(1);
+            const num = Number(avg);
+            const cellClass = num >= 70 ? 'cell-high' : (num >= 40 ? 'cell-mid' : 'cell-low');
+            tableHtml += `<td class="matrix-cell ${cellClass}" title="${e1.label} vs ${e2.label}: ${avg}% based on ${cell.count} words">${avg}% <small style="opacity:0.75; font-size:0.7rem;">(n=${cell.count})</small></td>`;
+          } else {
+            tableHtml += `<td class="matrix-cell cell-empty">—</td>`;
+          }
+        }
+      });
+      tableHtml += `</tr>`;
+    });
+
+    tableHtml += `</tbody></table>`;
+    DOM.matrixTableContainer.innerHTML = tableHtml;
+  }
+}
+
+function renderConceptProximityGrid() {
+  if (!DOM.conceptProxGrid) return;
+
+  const query = state.proxSearch;
+  const cat = state.proxCategory;
+  const sortMode = state.proxSort;
+
+  // Filter items
+  let items = state.data.filter(item => {
+    if (cat !== 'ALL' && item.category !== cat) return false;
+    if (query) {
+      const text = `${item.id} ${item.english} ${item.category} ${item.maleLatin} ${item.maleThaana}`.toLowerCase();
+      if (!text.includes(query)) return false;
+    }
+    return true;
+  });
+
+  // Calculate proximity info for items
+  const processedItems = items.map(item => ({
+    item,
+    prox: computeConceptProximity(item)
+  }));
+
+  // Sort items
+  processedItems.sort((a, b) => {
+    if (sortMode === 'sim-desc') {
+      const simA = a.prox.maxDhivehiSim ?? -1;
+      const simB = b.prox.maxDhivehiSim ?? -1;
+      return simB - simA;
+    }
+    if (sortMode === 'sim-asc') {
+      const simA = a.prox.maxDhivehiSim ?? 999;
+      const simB = b.prox.maxDhivehiSim ?? 999;
+      return simA - simB;
+    }
+    if (sortMode === 'alpha-asc') {
+      return a.item.english.localeCompare(b.item.english);
+    }
+    return a.item.id.localeCompare(b.item.id, undefined, { numeric: true });
+  });
+
+  if (DOM.proxResultsCount) {
+    DOM.proxResultsCount.textContent = `Showing ${processedItems.length} concepts (${state.data.length} total in corpus)`;
+  }
+
+  if (processedItems.length === 0) {
+    DOM.conceptProxGrid.innerHTML = `
+      <div class="empty-state" style="grid-column: 1 / -1; padding: 3rem 1rem;">
+        <div class="empty-icon">🔍</div>
+        <h3>No matching concepts</h3>
+        <p>Try searching for words like "big", "water", "bird", or change the category filter.</p>
+      </div>
+    `;
+    return;
+  }
+
+  DOM.conceptProxGrid.innerHTML = processedItems.map(({ item, prox }) => {
+    const maleLatin = item.maleLatin || '—';
+    const maleThaana = item.maleThaana || '';
+
+    // Champion badge
+    let champHtml = '';
+    if (prox.closestDhivehi && prox.closestDhivehi.match) {
+      const cd = prox.closestDhivehi;
+      champHtml = `
+        <div class="cprox-champion-badge" title="Closest attested dialect for this concept">
+          <span>🏆 Closest: <strong>${cd.entity.label}</strong> (${cd.match.simPct}% sim)</span>
+        </div>
+      `;
+    }
+
+    // Comparison Bars
+    const barsHtml = prox.comparisons.map(c => {
+      if (!c.hasData) {
+        return `
+          <div class="cprox-bar-item">
+            <div class="cprox-bar-row">
+              <span class="cprox-dialect-name"><span class="dialect-dot" style="background:${c.entity.color}"></span>${c.entity.label}</span>
+              <span class="cprox-awaiting-badge">Awaiting field data</span>
+            </div>
+          </div>
+        `;
+      }
+
+      const match = c.match;
+      if (!match) return '';
+
+      const sim = match.simPct;
+      let fillClass = 'fill-rose';
+      if (sim >= 80) fillClass = 'fill-green';
+      else if (sim >= 50) fillClass = 'fill-yellow';
+      else if (sim >= 25) fillClass = 'fill-orange';
+
+      const editLabel = match.rawDist === 0 ? 'Exact match' : `${match.rawDist} edit${match.rawDist > 1 ? 's' : ''}`;
+
+      return `
+        <div class="cprox-bar-item">
+          <div class="cprox-bar-row">
+            <span class="cprox-dialect-name"><span class="dialect-dot" style="background:${c.entity.color}"></span>${c.entity.label} <span class="cprox-word-matched">(${escapeHtml(match.wordB)})</span></span>
+            <span class="cprox-score-badge" title="${editLabel}">${sim}%</span>
+          </div>
+          <div class="cprox-progress-track">
+            <div class="cprox-progress-fill ${fillClass}" style="width:${sim}%;"></div>
+          </div>
+        </div>
+      `;
+    }).join('');
+
+    return `
+      <div class="concept-prox-card" onclick="window.appOpenModal('${escapeHtml(item.id)}')">
+        <div class="cprox-header">
+          <div>
+            <h3 class="cprox-concept-title">${escapeHtml(item.english)}</h3>
+            <div class="cprox-meta">
+              <span class="badge badge-id">${escapeHtml(item.id)}</span>
+              <span class="badge badge-category">${escapeHtml(item.category)}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="cprox-anchor">
+          <span class="cprox-anchor-label">Standard Anchor (Male')</span>
+          <div class="cprox-anchor-words">
+            <span class="cprox-anchor-latin">${escapeHtml(maleLatin)}</span>
+            ${maleThaana ? `<span class="cprox-anchor-thaana">${escapeHtml(maleThaana)}</span>` : ''}
+          </div>
+        </div>
+
+        ${champHtml}
+
+        <div class="cprox-bars-list">
+          ${barsHtml}
+        </div>
+      </div>
+    `;
+  }).join('');
 }
 
 function applyTheme(theme) {
@@ -719,6 +1150,12 @@ function showToast(message) {
 
 function updateUrlParams() {
   const url = new URL(window.location);
+  if (state.activeTab && state.activeTab !== 'explorer') {
+    url.searchParams.set('tab', state.activeTab);
+  } else {
+    url.searchParams.delete('tab');
+  }
+
   if (state.searchTerm) {
     url.searchParams.set('search', state.searchTerm);
   } else {
@@ -736,9 +1173,14 @@ function updateUrlParams() {
 
 function loadUrlParams() {
   const params = new URLSearchParams(window.location.search);
+  const tab = params.get('tab');
   const search = params.get('search');
   const cat = params.get('category');
 
+  if (tab === 'proximity') {
+    state.activeTab = 'proximity';
+    switchTab('proximity');
+  }
   if (search) {
     state.searchTerm = search;
     DOM.searchInput.value = search;

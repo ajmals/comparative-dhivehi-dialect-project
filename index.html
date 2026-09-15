@@ -36,6 +36,18 @@
       </div>
       
       <div class="header-actions">
+        <nav class="app-nav-tabs" aria-label="Main navigation tabs">
+          <button id="navTabExplorer" class="nav-tab active" data-tab="explorer">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3h18v18H3zM3 9h18M3 15h18M9 3v18M15 3v18"/></svg>
+            <span>Dialect Explorer</span>
+          </button>
+          <button id="navTabProximity" class="nav-tab" data-tab="proximity">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 20V10M12 20V4M6 20v-6"/></svg>
+            <span>Dialect Proximity & Similarity</span>
+            <span class="tab-badge">Visualizer</span>
+          </button>
+        </nav>
+
         <button id="themeToggleBtn" class="btn btn-icon" title="Toggle Dark/Light Mode" aria-label="Toggle theme">
           <svg class="icon sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
           <svg class="icon moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
@@ -56,6 +68,8 @@
 
   <!-- Main Container -->
   <main class="main-content">
+    <!-- View 1: Explorer Tab -->
+    <div id="tabContentExplorer" class="tab-pane active">
     <!-- Hero / Stats Bar -->
     <section class="stats-banner">
       <div class="stat-card">
@@ -194,6 +208,112 @@
         <!-- Dynamic card elements -->
       </div>
     </section>
+    </div><!-- End tabContentExplorer -->
+
+    <!-- View 2: Proximity & Similarity Visualizer Tab -->
+    <div id="tabContentProximity" class="tab-pane" style="display:none;">
+      <!-- Research & Methodology Banner -->
+      <section class="proximity-banner">
+        <div class="banner-header">
+          <div class="banner-badge">
+            <span class="pulse-dot"></span>
+            <span>Active Research & Open Data Initiative</span>
+          </div>
+          <span class="banner-version">Metric: Normalized Levenshtein Similarity</span>
+        </div>
+        <div class="banner-body">
+          <div class="banner-text">
+            <h3>How Dialect Proximity Works</h3>
+            <p>
+              We measure the phonetic edit distance between regional words and Standard Male' Dhivehi. A higher percentage means the words are closer (fewer sound/letter changes), while a lower score reflects phonetic shifts or unique regional vocabulary.
+            </p>
+            <p class="banner-note">
+              🌱 <strong>Ongoing Project Notice:</strong> Dialect terms are continuously collected, digitized from linguistic corpora (e.g. Fritz 2002, Swadesh lists), and contributed by native speakers. Missing words and similarity rankings will update live as new entries are merged into the dataset.
+            </p>
+          </div>
+          <div class="banner-actions">
+            <a href="data/dialect_distance_summary_matrix.csv" download class="btn btn-secondary btn-sm" title="Download aggregate distance matrix CSV">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              <span>Download Matrix CSV</span>
+            </a>
+            <a href="data/concept_edit_distances.csv" download class="btn btn-secondary btn-sm" title="Download concept edit distances CSV">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              <span>Download Concepts CSV</span>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- Macro Proximity Overview -->
+      <section class="macro-proximity-section">
+        <div class="section-heading-row">
+          <div>
+            <h2 class="section-heading">Atoll & Language Proximity Overview</h2>
+            <p class="section-subheading">Average vocabulary similarity across all analyzed concepts</p>
+          </div>
+        </div>
+
+        <!-- Quick Highlight Cards -->
+        <div class="proximity-summary-cards" id="proximitySummaryCards">
+          <!-- Dynamic high-level overview cards -->
+        </div>
+
+        <!-- Heatmap Proximity Matrix -->
+        <div class="proximity-matrix-card">
+          <div class="matrix-card-header">
+            <h4>Dialect & Language Distance Matrix</h4>
+            <div class="matrix-legend">
+              <span class="legend-item"><span class="legend-box score-high"></span> ≥70% (Very Close)</span>
+              <span class="legend-item"><span class="legend-box score-mid"></span> 40–69% (Moderate)</span>
+              <span class="legend-item"><span class="legend-box score-low"></span> &lt;40% (Divergent)</span>
+            </div>
+          </div>
+          <div class="matrix-table-wrapper" id="matrixTableContainer">
+            <!-- Dynamic Matrix Table -->
+          </div>
+        </div>
+      </section>
+
+      <!-- Word-by-Word Concept Similarity Explorer -->
+      <section class="concept-proximity-section">
+        <div class="section-heading-row">
+          <div>
+            <h2 class="section-heading">Word-by-Word Concept Proximity Explorer</h2>
+            <p class="section-subheading">Inspect how close each dialect's word is to Standard Male' for every individual concept</p>
+          </div>
+        </div>
+
+        <!-- Concept Explorer Controls -->
+        <div class="prox-controls-panel">
+          <div class="prox-search-bar">
+            <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input type="text" id="proxSearchInput" placeholder="Filter concept words (e.g. big, dog, bird, bodu)...">
+          </div>
+
+          <div class="prox-filter-group">
+            <select id="proxCategorySelect" class="select-dropdown" aria-label="Filter by category">
+              <option value="ALL">All Categories</option>
+            </select>
+
+            <select id="proxSortSelect" class="select-dropdown" aria-label="Sort concepts">
+              <option value="id-asc">Concept ID (Default)</option>
+              <option value="sim-desc">Highest Dialect Similarity First</option>
+              <option value="sim-asc">Most Phonetically Divergent First</option>
+              <option value="alpha-asc">English Gloss (A-Z)</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Concept Proximity Cards Grid -->
+        <div class="prox-results-bar">
+          <span id="proxResultsCount">Showing concepts...</span>
+        </div>
+
+        <div class="concept-prox-grid" id="conceptProxGrid">
+          <!-- Dynamic Word-by-Word Proximity Cards -->
+        </div>
+      </section>
+    </div><!-- End tabContentProximity -->
   </main>
 
   <!-- Word Detail Modal -->
