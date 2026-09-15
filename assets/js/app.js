@@ -156,6 +156,9 @@ function parseAndInitData(csvText) {
       populateCategories();
       updateStats();
       applyFilters();
+      if (state.activeTab === 'proximity') {
+        switchTab('proximity');
+      }
       DOM.loadingState.style.display = 'none';
 
       // Check URL for direct ID inspect
