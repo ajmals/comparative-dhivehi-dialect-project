@@ -90,6 +90,9 @@ const DOM = {
   proxSortSelect: document.getElementById('proxSortSelect'),
   proxResultsCount: document.getElementById('proxResultsCount'),
   conceptProxGrid: document.getElementById('conceptProxGrid'),
+  proxAnchorPills: document.getElementById('proxAnchorPills'),
+  modalMatrixContainer: document.getElementById('modalMatrixContainer'),
+  modalMatrixSection: document.getElementById('modalMatrixSection'),
 };
 
 let currentModalItem = null;
@@ -583,6 +586,42 @@ function openModal(item) {
     DOM.modalNotesSection.style.display = 'none';
   }
 
+  // Render concept pairwise distance matrix in modal
+  if (DOM.modalMatrixContainer) {
+    const allPairs = computeConceptAllPairs(item);
+    let matrixTableHtml = `
+      <table class="matrix-table" style="font-size:0.78rem;">
+        <thead>
+          <tr>
+            <th>Variety</th>
+            ${ALL_COMPARE_ENTITIES.map(e => `<th>${escapeHtml(e.label)}</th>`).join('')}
+          </tr>
+        </thead>
+        <tbody>
+    `;
+
+    ALL_COMPARE_ENTITIES.forEach(e1 => {
+      matrixTableHtml += `<tr><th>${escapeHtml(e1.label)}</th>`;
+      ALL_COMPARE_ENTITIES.forEach(e2 => {
+        if (e1.key === e2.key) {
+          matrixTableHtml += `<td class="matrix-cell cell-self">100%</td>`;
+        } else {
+          const m = allPairs.matrix[e1.key][e2.key];
+          if (m) {
+            const sim = m.simPct;
+            const cClass = sim >= 70 ? 'cell-high' : (sim >= 40 ? 'cell-mid' : 'cell-low');
+            matrixTableHtml += `<td class="matrix-cell ${cClass}" title="${e1.label} (${m.wordA}) vs ${e2.label} (${m.wordB}): ${m.rawDist} edit(s)">${sim}%<br><span style="font-size:0.7rem; opacity:0.85;">${escapeHtml(m.wordA)} ~ ${escapeHtml(m.wordB)}</span></td>`;
+          } else {
+            matrixTableHtml += `<td class="matrix-cell cell-empty">—</td>`;
+          }
+        }
+      });
+      matrixTableHtml += `</tr>`;
+    });
+    matrixTableHtml += `</tbody></table>`;
+    DOM.modalMatrixContainer.innerHTML = matrixTableHtml;
+  }
+
   DOM.wordModal.showModal();
 }
 
@@ -600,6 +639,16 @@ function setupEventListeners() {
     const nextTheme = state.theme === 'dark' ? 'light' : 'dark';
     applyTheme(nextTheme);
   });
+
+  // Proximity Anchor Pills
+  if (DOM.proxAnchorPills) {
+    DOM.proxAnchorPills.addEventListener('click', (e) => {
+      const btn = e.target.closest('.anchor-pill');
+      if (!btn) return;
+      const anchor = btn.dataset.anchor;
+      window.setProxAnchor(anchor);
+    });
+  }
 
   // Search input
   DOM.searchInput.addEventListener('input', (e) => {
@@ -827,37 +876,144 @@ const ALL_COMPARE_ENTITIES = [
   { key: 'arabic', label: 'Arabic', latinCol: 'Arabic', color: 'var(--col-arabic)', isDhivehi: false },
 ];
 
-function computeConceptProximity(item) {
-  const maleWords = parseWordList(item.raw["Male' - Latin"]);
-  const comparisons = [];
-  let closestDhivehi = null;
-  let maxDhivehiSim = -1;
+function computeConceptAllPairs(item) {
+  const entityWords = {};
+  const attestedEntities = [];
 
   ALL_COMPARE_ENTITIES.forEach(entity => {
-    if (entity.key === 'male') return;
-    const targetWords = parseWordList(item.raw[entity.latinCol]);
-    const match = findBestMatch(maleWords, targetWords);
+    const words = parseWordList(item.raw[entity.latinCol]);
+    entityWords[entity.key] = words;
+    if (words.length > 0) {
+      attestedEntities.push({
+        entity,
+        words,
+        thaana: entity.thaanaCol ? (item.raw[entity.thaanaCol] || '') : ''
+      });
+    }
+  });
+
+  const pairwiseMatches = [];
+  const matrix = {};
+
+  ALL_COMPARE_ENTITIES.forEach(e1 => {
+    matrix[e1.key] = {};
+    ALL_COMPARE_ENTITIES.forEach(e2 => {
+      matrix[e1.key][e2.key] = null;
+    });
+  });
+
+  let closestDhivehiPair = null;
+  let maxDhivehiSim = -1;
+
+  let closestOverallPair = null;
+  let maxOverallSim = -1;
+
+  for (let i = 0; i < ALL_COMPARE_ENTITIES.length; i++) {
+    const e1 = ALL_COMPARE_ENTITIES[i];
+    const words1 = entityWords[e1.key];
+
+    for (let j = i + 1; j < ALL_COMPARE_ENTITIES.length; j++) {
+      const e2 = ALL_COMPARE_ENTITIES[j];
+      const words2 = entityWords[e2.key];
+
+      const match = findBestMatch(words1, words2);
+      if (match) {
+        matrix[e1.key][e2.key] = match;
+        matrix[e2.key][e1.key] = match;
+
+        const isDhivehi = e1.isDhivehi && e2.isDhivehi;
+        const pairObj = {
+          e1,
+          e2,
+          match,
+          isDhivehi
+        };
+        pairwiseMatches.push(pairObj);
+
+        // Track closest Dhivehi pair
+        if (isDhivehi && match.simPct > maxDhivehiSim) {
+          maxDhivehiSim = match.simPct;
+          closestDhivehiPair = pairObj;
+        }
+
+        // Track closest overall pair
+        if (match.simPct > maxOverallSim) {
+          maxOverallSim = match.simPct;
+          closestOverallPair = pairObj;
+        }
+      }
+    }
+  }
+
+  // Sort pairwise matches by similarity descending
+  pairwiseMatches.sort((a, b) => b.match.simPct - a.match.simPct);
+
+  return {
+    entityWords,
+    attestedEntities,
+    pairwiseMatches,
+    matrix,
+    closestDhivehiPair,
+    maxDhivehiSim: maxDhivehiSim >= 0 ? maxDhivehiSim : null,
+    closestOverallPair,
+    maxOverallSim: maxOverallSim >= 0 ? maxOverallSim : null
+  };
+}
+
+function computeAnchorProximity(item, anchorKey) {
+  const allData = computeConceptAllPairs(item);
+  const anchorEntity = ALL_COMPARE_ENTITIES.find(e => e.key === anchorKey);
+  const anchorWords = allData.entityWords[anchorKey] || [];
+
+  const comparisons = [];
+  let closestEntity = null;
+  let maxSim = -1;
+
+  ALL_COMPARE_ENTITIES.forEach(entity => {
+    if (entity.key === anchorKey) return;
+    const targetWords = allData.entityWords[entity.key] || [];
+    const match = findBestMatch(anchorWords, targetWords);
 
     const comp = {
       entity,
       match,
-      hasData: targetWords.length > 0,
+      hasData: targetWords.length > 0
     };
     comparisons.push(comp);
 
-    if (entity.isDhivehi && match && match.simPct > maxDhivehiSim) {
-      maxDhivehiSim = match.simPct;
-      closestDhivehi = { entity, match };
+    if (match && match.simPct > maxSim) {
+      maxSim = match.simPct;
+      closestEntity = { entity, match };
     }
   });
 
   return {
-    maleWords,
+    allData,
+    anchorEntity,
+    anchorWords,
     comparisons,
-    closestDhivehi,
-    maxDhivehiSim: maxDhivehiSim >= 0 ? maxDhivehiSim : null
+    closestEntity,
+    maxSim: maxSim >= 0 ? maxSim : null
   };
 }
+
+// Global helper to switch anchor dynamically
+window.setProxAnchor = function(anchorKey) {
+  state.proxAnchor = anchorKey;
+  if (DOM.proxAnchorPills) {
+    DOM.proxAnchorPills.querySelectorAll('.anchor-pill').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.anchor === anchorKey);
+    });
+  }
+  renderConceptProximityGrid();
+};
+
+window.toggleMiniMatrix = function(id) {
+  const el = document.getElementById(`miniMatrix-${id}`);
+  if (el) {
+    el.style.display = el.style.display === 'none' ? 'block' : 'none';
+  }
+};
 
 // ==========================================
 // Proximity View Rendering
@@ -909,8 +1065,8 @@ function renderProximityMacroMatrix() {
 
   // Render Highlight Cards
   const pairsToHighlight = [
-    { a: 'male', b: 'addu', desc: 'Southernmost atoll; high phonological overlap with Standard Male\'' },
-    { a: 'male', b: 'huvadhu', desc: 'Archaic morphology and unique vowel shifts' },
+    { a: 'addu', b: 'huvadhu', desc: 'Southern dialect pair: vowel shifts & shared archaic forms' },
+    { a: 'male', b: 'addu', desc: 'Standard national baseline vs. southernmost atoll' },
     { a: 'male', b: 'sinhala', desc: 'Close Indo-Aryan sibling language baseline' },
   ];
 
@@ -986,33 +1142,43 @@ function renderConceptProximityGrid() {
   const query = state.proxSearch;
   const cat = state.proxCategory;
   const sortMode = state.proxSort;
+  const currentAnchor = state.proxAnchor || 'ALL';
 
   // Filter items
   let items = state.data.filter(item => {
     if (cat !== 'ALL' && item.category !== cat) return false;
     if (query) {
-      const text = `${item.id} ${item.english} ${item.category} ${item.maleLatin} ${item.maleThaana}`.toLowerCase();
-      if (!text.includes(query)) return false;
+      const searchStr = `${item.id} ${item.english} ${item.category} ${item.maleLatin} ${item.maleThaana} ${item.adduLatin} ${item.huvadhuLatin} ${item.fuvahmulahLatin} ${item.malikuLatin} ${item.sinhala} ${item.malayalam} ${item.arabic}`.toLowerCase();
+      if (!searchStr.includes(query)) return false;
     }
     return true;
   });
 
   // Calculate proximity info for items
-  const processedItems = items.map(item => ({
-    item,
-    prox: computeConceptProximity(item)
-  }));
+  const processedItems = items.map(item => {
+    if (currentAnchor === 'ALL') {
+      return {
+        item,
+        allPairs: computeConceptAllPairs(item)
+      };
+    } else {
+      return {
+        item,
+        anchorData: computeAnchorProximity(item, currentAnchor)
+      };
+    }
+  });
 
   // Sort items
   processedItems.sort((a, b) => {
     if (sortMode === 'sim-desc') {
-      const simA = a.prox.maxDhivehiSim ?? -1;
-      const simB = b.prox.maxDhivehiSim ?? -1;
+      const simA = (currentAnchor === 'ALL' ? a.allPairs.maxDhivehiSim : a.anchorData.maxSim) ?? -1;
+      const simB = (currentAnchor === 'ALL' ? b.allPairs.maxDhivehiSim : b.anchorData.maxSim) ?? -1;
       return simB - simA;
     }
     if (sortMode === 'sim-asc') {
-      const simA = a.prox.maxDhivehiSim ?? 999;
-      const simB = b.prox.maxDhivehiSim ?? 999;
+      const simA = (currentAnchor === 'ALL' ? a.allPairs.maxDhivehiSim : a.anchorData.maxSim) ?? 999;
+      const simB = (currentAnchor === 'ALL' ? b.allPairs.maxDhivehiSim : b.anchorData.maxSim) ?? 999;
       return simA - simB;
     }
     if (sortMode === 'alpha-asc') {
@@ -1022,7 +1188,8 @@ function renderConceptProximityGrid() {
   });
 
   if (DOM.proxResultsCount) {
-    DOM.proxResultsCount.textContent = `Showing ${processedItems.length} concepts (${state.data.length} total in corpus)`;
+    const anchorLabel = currentAnchor === 'ALL' ? 'All-to-All Pairs' : (ALL_COMPARE_ENTITIES.find(e => e.key === currentAnchor)?.label || currentAnchor);
+    DOM.proxResultsCount.textContent = `Showing ${processedItems.length} concepts (Anchor: ${anchorLabel})`;
   }
 
   if (processedItems.length === 0) {
@@ -1036,85 +1203,203 @@ function renderConceptProximityGrid() {
     return;
   }
 
-  DOM.conceptProxGrid.innerHTML = processedItems.map(({ item, prox }) => {
-    const maleLatin = item.maleLatin || '—';
-    const maleThaana = item.maleThaana || '';
+  DOM.conceptProxGrid.innerHTML = processedItems.map(dataObj => {
+    const item = dataObj.item;
 
-    // Champion badge
-    let champHtml = '';
-    if (prox.closestDhivehi && prox.closestDhivehi.match) {
-      const cd = prox.closestDhivehi;
-      champHtml = `
-        <div class="cprox-champion-badge" title="Closest attested dialect for this concept">
-          <span>🏆 Closest: <strong>${cd.entity.label}</strong> (${cd.match.simPct}% sim)</span>
-        </div>
-      `;
-    }
+    if (currentAnchor === 'ALL') {
+      const { allPairs } = dataObj;
 
-    // Comparison Bars
-    const barsHtml = prox.comparisons.map(c => {
-      if (!c.hasData) {
-        return `
-          <div class="cprox-bar-item">
-            <div class="cprox-bar-row">
-              <span class="cprox-dialect-name"><span class="dialect-dot" style="background:${c.entity.color}"></span>${c.entity.label}</span>
-              <span class="cprox-awaiting-badge">Awaiting field data</span>
-            </div>
+      // Attested word gallery tags
+      const wordTagsHtml = allPairs.attestedEntities.map(({ entity, words }) => `
+        <button class="cprox-word-tag" onclick="event.stopPropagation(); window.setProxAnchor('${entity.key}')" title="Click to view all distances measured from ${entity.label}">
+          <span class="dialect-dot" style="background:${entity.color}"></span>
+          <span class="cprox-tag-name">${entity.label}:</span>
+          <span class="cprox-tag-word">${escapeHtml(words.join(' / '))}</span>
+        </button>
+      `).join('');
+
+      // Closest Dhivehi champion pair
+      let champHtml = '';
+      if (allPairs.closestDhivehiPair) {
+        const cp = allPairs.closestDhivehiPair;
+        champHtml = `
+          <div class="cprox-champion-badge" title="Closest relationship among all Dhivehi varieties for this word">
+            <span>🏆 Closest Dialects: <strong>${cp.e1.label} ⟷ ${cp.e2.label}</strong> (${cp.match.simPct}% sim: <em>${escapeHtml(cp.match.wordA)} ~ ${escapeHtml(cp.match.wordB)}</em>)</span>
           </div>
         `;
       }
 
-      const match = c.match;
-      if (!match) return '';
+      // Top pairwise links
+      const topPairsHtml = allPairs.pairwiseMatches.slice(0, 5).map(({ e1, e2, match, isDhivehi }) => {
+        const sim = match.simPct;
+        let fillClass = 'fill-rose';
+        if (sim >= 80) fillClass = 'fill-green';
+        else if (sim >= 50) fillClass = 'fill-yellow';
+        else if (sim >= 25) fillClass = 'fill-orange';
 
-      const sim = match.simPct;
-      let fillClass = 'fill-rose';
-      if (sim >= 80) fillClass = 'fill-green';
-      else if (sim >= 50) fillClass = 'fill-yellow';
-      else if (sim >= 25) fillClass = 'fill-orange';
+        const editLabel = match.rawDist === 0 ? 'Exact match' : `${match.rawDist} edit${match.rawDist > 1 ? 's' : ''}`;
 
-      const editLabel = match.rawDist === 0 ? 'Exact match' : `${match.rawDist} edit${match.rawDist > 1 ? 's' : ''}`;
+        return `
+          <div class="cprox-bar-item">
+            <div class="cprox-bar-row">
+              <span class="cprox-dialect-name">
+                <span class="dialect-dot" style="background:${e1.color}"></span>${e1.label}
+                <span style="opacity:0.6; font-size:0.75rem;">⟷</span>
+                <span class="dialect-dot" style="background:${e2.color}"></span>${e2.label}
+                <span class="cprox-word-matched">(${escapeHtml(match.wordA)} ~ ${escapeHtml(match.wordB)})</span>
+              </span>
+              <span class="cprox-score-badge" title="${editLabel}">${sim}%</span>
+            </div>
+            <div class="cprox-progress-track">
+              <div class="cprox-progress-fill ${fillClass}" style="width:${sim}%;"></div>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      // Mini cross matrix
+      const matrixTableHtml = `
+        <table class="matrix-table" style="font-size:0.75rem;">
+          <thead>
+            <tr>
+              <th></th>
+              ${ALL_COMPARE_ENTITIES.map(e => `<th>${escapeHtml(e.label.split(' ')[0])}</th>`).join('')}
+            </tr>
+          </thead>
+          <tbody>
+            ${ALL_COMPARE_ENTITIES.map(e1 => `
+              <tr>
+                <th>${escapeHtml(e1.label.split(' ')[0])}</th>
+                ${ALL_COMPARE_ENTITIES.map(e2 => {
+                  if (e1.key === e2.key) return `<td class="matrix-cell cell-self">100%</td>`;
+                  const m = allPairs.matrix[e1.key][e2.key];
+                  if (!m) return `<td class="matrix-cell cell-empty">—</td>`;
+                  const sim = m.simPct;
+                  const cClass = sim >= 70 ? 'cell-high' : (sim >= 40 ? 'cell-mid' : 'cell-low');
+                  return `<td class="matrix-cell ${cClass}" title="${e1.label} (${m.wordA}) vs ${e2.label} (${m.wordB}): ${m.rawDist} edits">${sim}%</td>`;
+                }).join('')}
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+      `;
 
       return `
-        <div class="cprox-bar-item">
-          <div class="cprox-bar-row">
-            <span class="cprox-dialect-name"><span class="dialect-dot" style="background:${c.entity.color}"></span>${c.entity.label} <span class="cprox-word-matched">(${escapeHtml(match.wordB)})</span></span>
-            <span class="cprox-score-badge" title="${editLabel}">${sim}%</span>
+        <div class="concept-prox-card" onclick="window.appOpenModal('${escapeHtml(item.id)}')">
+          <div class="cprox-header">
+            <div>
+              <h3 class="cprox-concept-title">${escapeHtml(item.english)}</h3>
+              <div class="cprox-meta">
+                <span class="badge badge-id">${escapeHtml(item.id)}</span>
+                <span class="badge badge-category">${escapeHtml(item.category)}</span>
+              </div>
+            </div>
           </div>
-          <div class="cprox-progress-track">
-            <div class="cprox-progress-fill ${fillClass}" style="width:${sim}%;"></div>
+
+          <div class="cprox-words-gallery">
+            ${wordTagsHtml || '<span class="empty-cell-dash">No attested words</span>'}
+          </div>
+
+          ${champHtml}
+
+          <div class="cprox-bars-list">
+            ${topPairsHtml || '<p style="font-size:0.8rem; color:var(--text-dim);">Awaiting dialect comparison data</p>'}
+          </div>
+
+          <div class="cprox-card-footer" onclick="event.stopPropagation()">
+            <button class="cprox-matrix-toggle-btn" onclick="window.toggleMiniMatrix('${escapeHtml(item.id)}')">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3h18v18H3zM3 9h18M3 15h18M9 3v18M15 3v18"/></svg>
+              <span>Toggle Concept Matrix</span>
+            </button>
+            <span>${allPairs.attestedEntities.length} varieties</span>
+          </div>
+
+          <div id="miniMatrix-${escapeHtml(item.id)}" class="cprox-mini-matrix" style="display:none;" onclick="event.stopPropagation()">
+            ${matrixTableHtml}
           </div>
         </div>
       `;
-    }).join('');
+    } else {
+      // Specific anchor mode (e.g. Anchor on Addu, Huvadhu, or Sinhala)
+      const { anchorData } = dataObj;
+      const anchorEntity = anchorData.anchorEntity;
+      const anchorWordsStr = anchorData.anchorWords.join(' / ') || '—';
 
-    return `
-      <div class="concept-prox-card" onclick="window.appOpenModal('${escapeHtml(item.id)}')">
-        <div class="cprox-header">
-          <div>
-            <h3 class="cprox-concept-title">${escapeHtml(item.english)}</h3>
-            <div class="cprox-meta">
-              <span class="badge badge-id">${escapeHtml(item.id)}</span>
-              <span class="badge badge-category">${escapeHtml(item.category)}</span>
+      // Champion badge
+      let champHtml = '';
+      if (anchorData.closestEntity && anchorData.closestEntity.match) {
+        const cd = anchorData.closestEntity;
+        champHtml = `
+          <div class="cprox-champion-badge" title="Closest match to ${anchorEntity.label}">
+            <span>🏆 Closest to ${anchorEntity.label}: <strong>${cd.entity.label}</strong> (${cd.match.simPct}% sim: <em>${escapeHtml(cd.match.wordB)}</em>)</span>
+          </div>
+        `;
+      }
+
+      // Comparison Bars
+      const barsHtml = anchorData.comparisons.map(c => {
+        if (!c.hasData) {
+          return `
+            <div class="cprox-bar-item">
+              <div class="cprox-bar-row">
+                <span class="cprox-dialect-name"><span class="dialect-dot" style="background:${c.entity.color}"></span>${c.entity.label}</span>
+                <span class="cprox-awaiting-badge">Awaiting data</span>
+              </div>
+            </div>
+          `;
+        }
+
+        const match = c.match;
+        if (!match) return '';
+
+        const sim = match.simPct;
+        let fillClass = 'fill-rose';
+        if (sim >= 80) fillClass = 'fill-green';
+        else if (sim >= 50) fillClass = 'fill-yellow';
+        else if (sim >= 25) fillClass = 'fill-orange';
+
+        const editLabel = match.rawDist === 0 ? 'Exact match' : `${match.rawDist} edit${match.rawDist > 1 ? 's' : ''}`;
+
+        return `
+          <div class="cprox-bar-item">
+            <div class="cprox-bar-row">
+              <span class="cprox-dialect-name"><span class="dialect-dot" style="background:${c.entity.color}"></span>${c.entity.label} <span class="cprox-word-matched">(${escapeHtml(match.wordB)})</span></span>
+              <span class="cprox-score-badge" title="${editLabel}">${sim}%</span>
+            </div>
+            <div class="cprox-progress-track">
+              <div class="cprox-progress-fill ${fillClass}" style="width:${sim}%;"></div>
             </div>
           </div>
-        </div>
+        `;
+      }).join('');
 
-        <div class="cprox-anchor">
-          <span class="cprox-anchor-label">Standard Anchor (Male')</span>
-          <div class="cprox-anchor-words">
-            <span class="cprox-anchor-latin">${escapeHtml(maleLatin)}</span>
-            ${maleThaana ? `<span class="cprox-anchor-thaana">${escapeHtml(maleThaana)}</span>` : ''}
+      return `
+        <div class="concept-prox-card" onclick="window.appOpenModal('${escapeHtml(item.id)}')">
+          <div class="cprox-header">
+            <div>
+              <h3 class="cprox-concept-title">${escapeHtml(item.english)}</h3>
+              <div class="cprox-meta">
+                <span class="badge badge-id">${escapeHtml(item.id)}</span>
+                <span class="badge badge-category">${escapeHtml(item.category)}</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="cprox-anchor">
+            <span class="cprox-anchor-label">Anchor (${anchorEntity.label})</span>
+            <div class="cprox-anchor-words">
+              <span class="cprox-anchor-latin">${escapeHtml(anchorWordsStr)}</span>
+            </div>
+          </div>
+
+          ${champHtml}
+
+          <div class="cprox-bars-list">
+            ${barsHtml}
           </div>
         </div>
-
-        ${champHtml}
-
-        <div class="cprox-bars-list">
-          ${barsHtml}
-        </div>
-      </div>
-    `;
+      `;
+    }
   }).join('');
 }
 

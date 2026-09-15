@@ -237,21 +237,44 @@ def process_dataset(input_csv: str, output_dir: str):
         else:
             wide_row["Male_Is_Dhivehi_Dialect_Closer"] = ""
 
-        # 2. Add other intra-Dhivehi dialect comparisons (Addu vs Huvadhu, Addu vs Fuvahmulah, etc.)
-        dhivehi_pairs = list(combinations([d for d in DHIVEHI_KEYS if d != "Male'"], 2))
-        for d1, d2 in dhivehi_pairs:
+        # 2. Add all intra-Dhivehi dialect comparisons and track overall closest dialect pair
+        overall_closest_dhivehi_pairs = []
+        overall_best_dhivehi_sim = -1.0
+        overall_best_dhivehi_words = []
+
+        all_dhivehi_pairs = list(combinations(DHIVEHI_KEYS, 2))
+        for d1, d2 in all_dhivehi_pairs:
             match = find_best_match(entity_words[d1], entity_words[d2])
-            pair_col = f"{d1}_vs_{d2}"
+            c1 = d1.replace(' ', '_').replace("'", '')
+            c2 = d2.replace(' ', '_').replace("'", '')
+            pair_col = f"{c1}_vs_{c2}"
             if match:
                 wide_row[f"{pair_col}_Best_Pair"] = f"{match['word_a']} ~ {match['word_b']}"
                 wide_row[f"{pair_col}_Raw_Dist"] = match["raw_dist"]
                 wide_row[f"{pair_col}_Norm_Dist"] = match["norm_dist"]
                 wide_row[f"{pair_col}_Sim_Pct"] = match["sim_pct"]
+
+                if match["sim_pct"] > overall_best_dhivehi_sim:
+                    overall_best_dhivehi_sim = match["sim_pct"]
+                    overall_closest_dhivehi_pairs = [f"{d1} ⟷ {d2}"]
+                    overall_best_dhivehi_words = [f"{match['word_a']} ~ {match['word_b']}"]
+                elif match["sim_pct"] == overall_best_dhivehi_sim:
+                    overall_closest_dhivehi_pairs.append(f"{d1} ⟷ {d2}")
+                    overall_best_dhivehi_words.append(f"{match['word_a']} ~ {match['word_b']}")
             else:
                 wide_row[f"{pair_col}_Best_Pair"] = ""
                 wide_row[f"{pair_col}_Raw_Dist"] = ""
                 wide_row[f"{pair_col}_Norm_Dist"] = ""
                 wide_row[f"{pair_col}_Sim_Pct"] = ""
+
+        if overall_best_dhivehi_sim >= 0:
+            wide_row["Overall_Closest_Dhivehi_Pair"] = " / ".join(overall_closest_dhivehi_pairs)
+            wide_row["Overall_Closest_Dhivehi_Sim_Pct"] = overall_best_dhivehi_sim
+            wide_row["Overall_Closest_Dhivehi_Words"] = " / ".join(overall_best_dhivehi_words)
+        else:
+            wide_row["Overall_Closest_Dhivehi_Pair"] = ""
+            wide_row["Overall_Closest_Dhivehi_Sim_Pct"] = ""
+            wide_row["Overall_Closest_Dhivehi_Words"] = ""
 
         concept_wide_rows.append(wide_row)
 

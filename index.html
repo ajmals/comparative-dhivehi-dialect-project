@@ -278,8 +278,8 @@
       <section class="concept-proximity-section">
         <div class="section-heading-row">
           <div>
-            <h2 class="section-heading">Word-by-Word Concept Proximity Explorer</h2>
-            <p class="section-subheading">Inspect how close each dialect's word is to Standard Male' for every individual concept</p>
+            <h2 class="section-heading">Word-by-Word Dialect & Language Proximity</h2>
+            <p class="section-subheading">Compare how every dialect and language relates to each other for each individual concept</p>
           </div>
         </div>
 
@@ -301,6 +301,22 @@
               <option value="sim-asc">Most Phonetically Divergent First</option>
               <option value="alpha-asc">English Gloss (A-Z)</option>
             </select>
+          </div>
+        </div>
+
+        <!-- Baseline Reference Selector Pills -->
+        <div class="prox-anchor-bar">
+          <span class="filter-label">Measure Distances From:</span>
+          <div class="prox-anchor-pills" id="proxAnchorPills">
+            <button class="anchor-pill active" data-anchor="ALL">🏆 All-to-All (Closest Pairs)</button>
+            <button class="anchor-pill" data-anchor="male"><span class="dialect-dot dot-male"></span>Male' (Std)</button>
+            <button class="anchor-pill" data-anchor="addu"><span class="dialect-dot dot-addu"></span>Addu</button>
+            <button class="anchor-pill" data-anchor="huvadhu"><span class="dialect-dot dot-huvadhu"></span>Huvadhu</button>
+            <button class="anchor-pill" data-anchor="fuvahmulah"><span class="dialect-dot dot-fuvahmulah"></span>Fuvahmulah</button>
+            <button class="anchor-pill" data-anchor="maliku"><span class="dialect-dot dot-maliku"></span>Maliku</button>
+            <button class="anchor-pill ref-pill" data-anchor="sinhala"><span class="dialect-dot dot-sinhala"></span>Sinhala</button>
+            <button class="anchor-pill ref-pill" data-anchor="malayalam"><span class="dialect-dot dot-malayalam"></span>Malayalam</button>
+            <button class="anchor-pill ref-pill" data-anchor="arabic"><span class="dialect-dot dot-arabic"></span>Arabic</button>
           </div>
         </div>
 
@@ -340,6 +356,13 @@
         <h4 class="section-title">Comparative & Cognate Languages</h4>
         <div class="modal-cognates-grid" id="modalCognatesGrid">
           <!-- Cognates comparison cards -->
+        </div>
+
+        <div id="modalMatrixSection" class="modal-matrix-section">
+          <h4 class="section-title">Concept Cross-Dialect Distance Matrix</h4>
+          <div id="modalMatrixContainer" class="matrix-table-wrapper">
+            <!-- Modal dynamic matrix table -->
+          </div>
         </div>
 
         <div id="modalNotesSection" class="modal-notes-section" style="display:none;">
