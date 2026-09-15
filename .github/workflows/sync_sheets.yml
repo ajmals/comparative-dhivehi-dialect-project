@@ -22,14 +22,17 @@ jobs:
       - name: Run sync script
         run: python3 scripts/sync_from_sheets.py
 
+      - name: Recalculate Edit Distances
+        run: python3 scripts/calculate_edit_distance.py
+
       - name: Commit and push if changed
         run: |
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-          git add dhivehi_language_comparision.csv
+          git add dhivehi_language_comparision.csv data/
           if git diff --staged --quiet; then
             echo "No changes detected. Skipping commit."
           else
-            git commit -m "chore: sync comparative dataset from Google Sheets [skip ci]"
+            git commit -m "chore: sync dataset from Google Sheets and update edit distances [skip ci]"
             git push
           fi
