@@ -8,3 +8,13 @@ __pycache__/
 .DS_Store?
 ._*
 **/.DS_Store
+
+# Reference PDFs & large binaries
+*.pdf
+
+# Environment & secrets
+.env
+.env.*
+*.pem
+*.key
+*credentials*.json
