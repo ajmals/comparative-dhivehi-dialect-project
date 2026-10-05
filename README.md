@@ -131,7 +131,7 @@ python scripts/calculate_edit_distance.py
 
 ## Repository Structure
 
-The repository is organized to prioritize linguistic data and comparative tables while keeping technical automation, distance calculation, and extraction scripts in a dedicated folder:
+The repository is organized to prioritize linguistic data and comparative tables while keeping technical automation, distance calculation, and data compilation scripts in a dedicated folder:
 
 ```
 ├── dhivehi_language_comparision.csv       # Primary master comparative dataset
@@ -139,20 +139,15 @@ The repository is organized to prioritize linguistic data and comparative tables
 │   ├── concept_edit_distances.csv         # Per-concept edit distance & similarity breakdown
 │   ├── concept_pairwise_distances.csv     # Tidy long-format pairwise distance table
 │   ├── dialect_distance_summary_matrix.csv# Aggregate dialect distance & similarity matrix
-│   ├── extractions/                       # Dialect text extractions & vocabulary tables (Fritz 2002)
-│   ├── raw/                               # Raw source wordlists (Swadesh 100/215, Wiktionary modules)
-│   └── references/                        # Reference literature PDFs and scanned materials
+│   ├── atolls/                            # Island-level dialect variation templates (20 atolls)
+│   ├── compiled/                          # Compiled unified multi-resolution datasets
+│   └── reference/                         # Master island registry & reference materials
 └── scripts/                               # Technical automation, data compilation & analysis scripts
     ├── requirements.txt                   # Script dependencies
     ├── calculate_edit_distance.py         # Levenshtein distance & similarity calculation pipeline
     ├── sync_from_sheets.py                # Automated Google Sheets synchronization script
-    ├── build_dataset.py                   # Master dataset compilation pipeline
-    ├── build_full_t1_dataset.py           # Dialect Story T1 extraction builder
-    ├── create_4col_mapping.py             # 4-column vocabulary mapping generator
-    ├── export_p2_p3.py                    # Story T1 baseline word alignment
-    ├── parse_t1_full.py                   # Text parsing helper
-    ├── process_pdf.py                     # Concepticon wordlist fetcher
-    └── process_story_words.py             # PDF layout processing tool
+    ├── compile_islands.py                 # Multi-resolution island dataset compiler
+    └── upload_to_gdrive.py                # Google Drive sync utility
 ```
 
 ---

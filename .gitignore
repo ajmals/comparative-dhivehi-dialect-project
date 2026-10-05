@@ -19,3 +19,14 @@ data/references/page_images/
 *.pem
 *.key
 *credentials*.json
+
+# Internal planning & notes
+FUTURE_PLANS.md
+ROADMAP_INTERNAL.md
+
+# Archives & inactive datasets
+archive/
+data/extractions/
+data/raw/
+*.tar.gz
+*.zip
