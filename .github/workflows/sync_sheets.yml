@@ -19,8 +19,14 @@ jobs:
         with:
           python-version: '3.11'
 
-      - name: Run sync script
+      - name: Run sync script (Master Benchmark)
         run: python3 scripts/sync_from_sheets.py
+
+      - name: Run sync script (Regional Atolls & Compilation)
+        run: python3 scripts/sync_atolls.py --compile
+
+      - name: Roll up Island Consensus into Master Dataset
+        run: python3 scripts/rollup_consensus.py
 
       - name: Recalculate Edit Distances
         run: python3 scripts/calculate_edit_distance.py

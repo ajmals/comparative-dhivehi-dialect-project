@@ -152,8 +152,21 @@ def process_dataset(input_csv: str, output_dir: str):
 
         # Extract parsed words for each dialect / language
         entity_words = {}
-        for name, col_name in ALL_ENTITIES:
-            entity_words[name] = parse_word_list(row.get(col_name, ""))
+        for name, default_col in ALL_ENTITIES:
+            # Check Consensus, Contributed, and default column names
+            candidates = [
+                f"{name} - Consensus - Latin",
+                f"{name} - Contributed - Latin",
+                f"{name} - Latin",
+                default_col,
+                name,
+            ]
+            cell_val = ""
+            for c in candidates:
+                if c in row and row[c].strip():
+                    cell_val = row[c].strip()
+                    break
+            entity_words[name] = parse_word_list(cell_val)
 
         wide_row = {
             "ID": concept_id,

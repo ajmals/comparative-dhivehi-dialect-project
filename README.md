@@ -9,6 +9,8 @@ All data in this repository is completely free, open, and unrestricted for anyon
 ## Interactive Web Explorer & Collaboration
 * 🌐 **[Live Web App (GitHub Pages)](https://ajmals.github.io/comparative-dhivehi-dialect-project/)** — Interactive explorer with instant search, script toggles (Thaana / Latin), dialect comparison cards, and filters.
 * 📊 **[dhivehi_language_comparision.csv](dhivehi_language_comparision.csv)** — Master dataset file.
+* 🛠️ **[Technical Architecture & Engineering Manual (TECHNICAL.md)](TECHNICAL.md)** — Detailed technical documentation covering data flow, pipelines, Levenshtein distance algorithms, CI/CD, and schemas.
+* 🏝️ **[Regional Atoll & Island Dialect Guide](data/atolls/README.md)** — Contributor guidelines and reference schemas for all 188 inhabited islands.
 
 ### Open Collaboration
 Language changes, dialects are diverse, and corrections are always welcome! If you spot a mistake, want to suggest a better term, or wish to contribute new words or dialect variants, you can collaborate directly with us:
@@ -35,21 +37,42 @@ The core mission of this project is the **comprehensive comparison of all Maldiv
 
 In addition to intra-Dhivehi dialectal comparisons, external languages (Sinhala, Malayalam, Arabic) are included as supplementary reference points for cognate tracking, etymology, and historical contact analysis.
 
-### Dialects & Languages Covered:
-1. **Maldivian (Dhivehi) Dialects (Primary Focus)**:
+### Multi-Tier Linguistic Resolution:
+1. **Tier 1 — Atoll Master Benchmarks (`dhivehi_language_comparision.csv`)**:
    - **Male'** (Standard Dhivehi — primary reference dialect)
    - **Addu** (Southernmost atoll dialect, characterized by distinct phonetic shifts)
    - **Huvadhu** (Southern dialect, preserving unique archaic morphology and phonology)
    - **Fuvahmulah** (Distinctive dialect of the isolated central-southern single-island atoll)
    - **Maliku / Minicoy (Mahl)** (Spoken on Minicoy Island in Lakshadweep; the northernmost Dhivehi variety with unique phonology and contact influences)
-   - *(Designed to be extensible to other regional and island dialect varieties)*
+   - **External Cognates**: Sinhala, Malayalam, and Arabic reference terms.
 
-2. **Supplementary Comparative Languages (Reference)**:
-   - **Sinhala** (Close Indo-Aryan sibling language for cognate tracking)
-   - **Malayalam** (Neighboring Dravidian language with historical maritime and regional contact)
-   - **Arabic** (Historical religious and cultural superstrate influence)
+2. **Tier 2 — Island-Level Micro-Dialectology (`data/atolls/`)**:
+   - Detailed island-by-island mapping covering all **188 inhabited islands** across the **20 administrative atolls** of the Maldives.
+   - Designed to document micro-variations, phonetic nuances, and localized terms (e.g., between Hithadhoo vs. Hulhumeedhoo in Addu, or Thinadhoo vs. Gadhdhoo vs. Kolamaafushi in Huvadhu).
 
-Each Dhivehi dialect is split into separate columns for **Latin transliteration** and the **native Thaana script** to support phonological, phonetic, and orthographic analyses. Comparison languages are provided in standardized Latin script (ISO/IAST) to maintain clarity and focus on the Maldivian variants.
+---
+
+## Island-Level Micro-Dialectology & GIS Mapping
+
+While the master dataset provides the aggregate benchmark for each dialect region, significant lexical and phonetic divergence exists between neighboring islands within the same atoll—most notably across **Huvadhu (18 inhabited islands across GA & GDh)** and **Addu (6 inhabited islands)**.
+
+To document and preserve these localized island-specific variations:
+
+1. **20 Atoll Template Files (`data/atolls/`)**:
+   - Every administrative atoll from **01 Haa Alifu** to **20 Seenu (Addu)** has a dedicated comparative table.
+   - Each file contains baseline reference columns (`Standard Male'`, `Benchmark`) followed by side-by-side columns for every inhabited island (`<Island_Name> - Latin`, `<Island_Name> - Thaana`), with administrative capitals listed first.
+2. **The Blank Cell Inheritance Rule**:
+   - To make crowdsourcing fast and eliminate redundant data entry, island cells that use the standard atoll benchmark form are left **blank**.
+   - Contributors only need to fill in an island cell when there is a **distinct local word, vowel shift, or pronunciation difference**.
+3. **Authoritative Island Registry & GIS Alignment**:
+   - Linked directly to the public [`ajmals/maldives-islands-dataset`](https://github.com/ajmals/maldives-islands-dataset) repository.
+   - Master reference data is stored locally in `data/reference/inhabited_islands_master.csv`.
+4. **Compiled Unified Dataset (`data/compiled/dhivehi_islands_unified.csv`)**:
+   - An automated pipeline ([`scripts/compile_islands.py`](scripts/compile_islands.py)) resolves inherited baselines and enriches each island record with official Land Feature Codes (`FCODE`), island council metadata, and Decimal Degree coordinates (`Lat_DD`, `Lon_DD`).
+   - Generates **18,800 geocoded rows** (100 concepts × 188 islands) ready for spatial GIS mapping, isogloss boundary tracking, and geographic distance vs. lexical distance correlation.
+
+> 📖 **Want to explore an atoll or contribute words for your island?**  
+> Check the **[Regional Atoll & Island Dialect Guide](data/atolls/README.md)** for the complete atoll directory, column schemas, contributor guidelines, and detailed benchmark examples.
 
 ---
 
@@ -94,28 +117,30 @@ python scripts/calculate_edit_distance.py
 
 ---
 
-## Column Descriptions
+## Column Descriptions & Dual-Input Architecture
 
-| Column Name | Description | Example |
-| :--- | :--- | :--- |
-| **ID** | Unique identifier with list-specific prefix | `SW100-001`, `SW215-011`, `FRZ-001` |
-| **Word List** | Source or reference wordlist | `Swadesh 100`, `Swadesh 215`, `Fritz 2002 Texts` |
-| **Category** | Semantic domain / lexical category | `Body Parts & Substances`, `Animals`, `Plants & Plant Parts` |
-| **English** | The reference English concept or gloss term | `all`, `bark`, `house` |
-| **Male' - Latin** | Standard Maldivian term in Latin transliteration | `Hurihaa` |
-| **Male' - Thaana** | Standard Maldivian term in native Thaana script | `ހުރިހާ` |
-| **Addu - Latin** | Addu dialect term in Latin transliteration | `Hurihaa` |
-| **Addu - Thaana** | Addu dialect term in native Thaana script | `ހުރިހާ` |
-| **Huvadhu - Latin** | Huvadhu dialect term in Latin transliteration | `Hurihaa` |
-| **Huvadhu - Thaana** | Huvadhu dialect term in native Thaana script | `ހުރިހާ` |
-| **Fuvahmulah - Latin** | Fuvahmulah dialect term in Latin transliteration | `fiñdanu` |
-| **Fuvahmulah - Thaana** | Fuvahmulah dialect term in native Thaana script | `ފިނދަނު` |
-| **Maliku - Latin** | Maliku / Minicoy (Mahl) term in Latin transliteration | `Hurihaa` |
-| **Maliku - Thaana** | Maliku / Minicoy (Mahl) term in native Thaana script | `ހުރިހާ` |
-| **Sinhala** | Sinhala comparative term(s) in Latin transliteration | `Hama / Òkkòma` |
-| **Malayalam** | Malayalam comparative term(s) in Latin transliteration | `Èllāṃ / Sarvva` |
-| **Arabic** | Arabic comparative term(s) in Latin transliteration | `Kulla` |
-| **Notes** | Optional contextual, grammatical, or source notes | `Fritz (2002) p.2` |
+The master dataset features a **Hierarchical Dual-Input Model** accommodating two levels of community contributions:
+1. **Atoll Consensus Columns (`*- Consensus - *`)**: Computed automatically by [`scripts/rollup_consensus.py`](scripts/rollup_consensus.py) from the 188 inhabited island ground-truth datasets. Represents the statistical mode (most frequent term) across an atoll's constituent islands.
+2. **Community Contributed Columns (`*- Contributed - *`)**: Open for community volunteers to propose general atoll-level terms directly. If contributed data is ever corrupted or needs re-alignment, running `python3 scripts/rollup_consensus.py --overwrite-contributed` safely restores it from the island consensus.
+
+| Column Name | Input Type | Description | Example |
+| :--- | :--- | :--- | :--- |
+| **ID** | System | Unique identifier with list-specific prefix | `SW100-001`, `FRZ-001` |
+| **Word List** | Reference | Source or reference wordlist | `Swadesh 100`, `Fritz 2002 Texts` |
+| **Category** | Semantic | Semantic domain / lexical category | `Body Parts & Substances`, `Quantitatives` |
+| **English** | Gloss | Reference English gloss term | `all`, `bark`, `belly` |
+| **Male' - Latin / Thaana** | Standard Anchor | Standard Maldivian reference baseline | `Hurihaa` / `ހުރިހާ` |
+| **Addu - Consensus - Latin / Thaana** | Computed (Mode) | Statistical consensus term across all 6 Addu islands | `Hushihei` / `ހުށިހެއި` |
+| **Addu - Contributed - Latin / Thaana** | Community Input | General atoll term proposed by community contributors | `Hushihei` / `ހުށިހެއި` |
+| **Huvadhu - Consensus - Latin / Thaana** | Computed (Mode) | Statistical consensus term across all 18 Huvadhu (GA/GDh) islands | `Theiyehei` / `ތެއްޔެހެއި` |
+| **Huvadhu - Contributed - Latin / Thaana**| Community Input | General atoll term proposed by community contributors | `Theiyehei` / `ތެއްޔެހެއި` |
+| **Fuvahmulah - Consensus - Latin / Thaana** | Computed (Mode) | Statistical consensus term for Gnaviyani (Fuvahmulah) | `Hushihai` / `ހުށިހައި` |
+| **Fuvahmulah - Contributed - Latin / Thaana**| Community Input | General atoll term proposed by community contributors | `Hushihai` / `ހުށިހައި` |
+| **Maliku - Latin / Thaana** | Regional Anchor | Maliku / Minicoy (Mahl) term (Lakshadweep) | `Hurihaa` / `ހުރިހާ` |
+| **Sinhala** | External Cognate | Sinhala comparative term in Latin (IAST diacritics) | `Hama / Òkkòma` |
+| **Malayalam** | External Cognate | Malayalam comparative term in Latin (ISO 15919) | `Èllāṃ / Sarvva` |
+| **Arabic** | External Cognate | Arabic comparative root/term in Latin | `Kulla` |
+| **Notes** | Contextual | Etymological, historical, or academic notes | `Fritz (2002) p.2` |
 
 *Note: Where multiple words correspond to a single concept, they are separated by a slash (` / `).*
 
@@ -134,6 +159,8 @@ python scripts/calculate_edit_distance.py
 The repository is organized to prioritize linguistic data and comparative tables while keeping technical automation, distance calculation, and data compilation scripts in a dedicated folder:
 
 ```
+├── README.md                              # Linguistic overview & general documentation
+├── TECHNICAL.md                           # Technical documentation, pipelines & architecture
 ├── dhivehi_language_comparision.csv       # Primary master comparative dataset
 ├── data/
 │   ├── concept_edit_distances.csv         # Per-concept edit distance & similarity breakdown
@@ -144,15 +171,19 @@ The repository is organized to prioritize linguistic data and comparative tables
 │   └── reference/                         # Master island registry & reference materials
 └── scripts/                               # Technical automation, data compilation & analysis scripts
     ├── requirements.txt                   # Script dependencies
+    ├── atoll_sheets_config.json           # Cloud Google Sheets ID mapping for all 20 atolls
+    ├── sync_from_sheets.py                # Synchronizes master benchmark dataset from Google Sheets
+    ├── sync_atolls.py                     # Synchronizes all 20 atoll sheets & triggers compilation
+    ├── compile_islands.py                 # Multi-resolution island dataset compiler (18,800 records)
+    ├── rollup_consensus.py                # Computes island mode consensus & maintains dual columns
     ├── calculate_edit_distance.py         # Levenshtein distance & similarity calculation pipeline
-    ├── sync_from_sheets.py                # Automated Google Sheets synchronization script
-    ├── compile_islands.py                 # Multi-resolution island dataset compiler
     └── upload_to_gdrive.py                # Google Drive sync utility
 ```
 
 ---
 
 ## References & Sources
+- **[Maldives Islands & Resorts Dataset (2026)](https://github.com/ajmals/maldives-islands-dataset)**: Authoritative geospatial and administrative registry of islands, LGA councils, and coordinates.
 - **[Swadesh 1955 Concept List (PDF)](https://s3.nexus.mpcdf.mpg.de/eva-dlce-concepticon/Swadesh1955.pdf)**: The original reference paper outlining the 100-concept list (*Towards a satisfactory calibration of glottochronology*, Morris Swadesh, 1955).
 - **Fritz, Sonja (2002)**: *The Dhivehi Language: A Descriptive and Historical Grammar of Maldivian and Its Dialects*, Vol II: Materials.
 

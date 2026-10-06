@@ -32,11 +32,26 @@ const state = {
 // Dialect metadata mapping
 const DIALECTS = [
   { key: 'male', label: "Male' (Std)", latinCol: "Male' - Latin", thaanaCol: "Male' - Thaana", color: 'var(--col-male)' },
-  { key: 'addu', label: 'Addu', latinCol: 'Addu - Latin', thaanaCol: 'Addu - Thaana', color: 'var(--col-addu)' },
-  { key: 'huvadhu', label: 'Huvadhu', latinCol: 'Huvadhu - Latin', thaanaCol: 'Huvadhu - Thaana', color: 'var(--col-huvadhu)' },
-  { key: 'fuvahmulah', label: 'Fuvahmulah', latinCol: 'Fuvahmulah - Latin', thaanaCol: 'Fuvahmulah - Thaana', color: 'var(--col-fuvahmulah)' },
-  { key: 'maliku', label: 'Maliku (Mahl)', latinCol: 'Maliku - Latin', thaanaCol: 'Maliku - Thaana', color: 'var(--col-maliku)' },
+  { key: 'addu', label: 'Addu', latinCol: "Addu - Consensus - Latin", thaanaCol: "Addu - Consensus - Thaana", color: 'var(--col-addu)' },
+  { key: 'huvadhu', label: 'Huvadhu', latinCol: "Huvadhu - Consensus - Latin", thaanaCol: "Huvadhu - Consensus - Thaana", color: 'var(--col-huvadhu)' },
+  { key: 'fuvahmulah', label: 'Fuvahmulah', latinCol: "Fuvahmulah - Consensus - Latin", thaanaCol: "Fuvahmulah - Consensus - Thaana", color: 'var(--col-fuvahmulah)' },
+  { key: 'maliku', label: 'Maliku (Mahl)', latinCol: "Maliku - Latin", thaanaCol: "Maliku - Thaana", color: 'var(--col-maliku)' },
 ];
+
+function resolveEntityField(raw, label, type) {
+  if (!raw) return '';
+  const cleanLabel = label.replace(/\s*\(Std\)|\s*\(Mahl\)/g, '').trim();
+  const candidates = [
+    `${cleanLabel} - Consensus - ${type}`,
+    `${cleanLabel} - Contributed - ${type}`,
+    `${cleanLabel} - ${type}`,
+    cleanLabel,
+  ];
+  for (const c of candidates) {
+    if (raw[c] && raw[c].trim()) return raw[c].trim();
+  }
+  return '';
+}
 
 const COGNATES = [
   { key: 'sinhala', label: 'Sinhala', col: 'Sinhala', color: 'var(--col-sinhala)' },
@@ -140,12 +155,12 @@ function parseAndInitData(csvText) {
         english: (row['English'] || '').trim(),
         maleLatin: (row["Male' - Latin"] || '').trim(),
         maleThaana: (row["Male' - Thaana"] || '').trim(),
-        adduLatin: (row['Addu - Latin'] || '').trim(),
-        adduThaana: (row['Addu - Thaana'] || '').trim(),
-        huvadhuLatin: (row['Huvadhu - Latin'] || '').trim(),
-        huvadhuThaana: (row['Huvadhu - Thaana'] || '').trim(),
-        fuvahmulahLatin: (row['Fuvahmulah - Latin'] || '').trim(),
-        fuvahmulahThaana: (row['Fuvahmulah - Thaana'] || '').trim(),
+        adduLatin: (row['Addu - Consensus - Latin'] || row['Addu - Contributed - Latin'] || row['Addu - Latin'] || '').trim(),
+        adduThaana: (row['Addu - Consensus - Thaana'] || row['Addu - Contributed - Thaana'] || row['Addu - Thaana'] || '').trim(),
+        huvadhuLatin: (row['Huvadhu - Consensus - Latin'] || row['Huvadhu - Contributed - Latin'] || row['Huvadhu - Latin'] || '').trim(),
+        huvadhuThaana: (row['Huvadhu - Consensus - Thaana'] || row['Huvadhu - Contributed - Thaana'] || row['Huvadhu - Thaana'] || '').trim(),
+        fuvahmulahLatin: (row['Fuvahmulah - Consensus - Latin'] || row['Fuvahmulah - Contributed - Latin'] || row['Fuvahmulah - Latin'] || '').trim(),
+        fuvahmulahThaana: (row['Fuvahmulah - Consensus - Thaana'] || row['Fuvahmulah - Contributed - Thaana'] || row['Fuvahmulah - Thaana'] || '').trim(),
         malikuLatin: (row['Maliku - Latin'] || '').trim(),
         malikuThaana: (row['Maliku - Thaana'] || '').trim(),
         sinhala: (row['Sinhala'] || '').trim(),
@@ -524,8 +539,8 @@ function openModal(item) {
 
   // Build dialect grid
   DOM.modalDialectsGrid.innerHTML = DIALECTS.map(d => {
-    const latin = item.raw[d.latinCol] || '';
-    const thaana = item.raw[d.thaanaCol] || '';
+    const latin = resolveEntityField(item.raw, d.label, 'Latin') || item.raw[d.latinCol] || '';
+    const thaana = resolveEntityField(item.raw, d.label, 'Thaana') || item.raw[d.thaanaCol] || '';
     const hasData = (latin && latin.trim() !== '') || (thaana && thaana.trim() !== '');
 
     if (!hasData) {
@@ -883,13 +898,14 @@ function computeConceptAllPairs(item) {
   const attestedEntities = [];
 
   ALL_COMPARE_ENTITIES.forEach(entity => {
-    const words = parseWordList(item.raw[entity.latinCol]);
+    const fieldVal = resolveEntityField(item.raw, entity.label, 'Latin') || item.raw[entity.latinCol] || '';
+    const words = parseWordList(fieldVal);
     entityWords[entity.key] = words;
     if (words.length > 0) {
       attestedEntities.push({
         entity,
         words,
-        thaana: entity.thaanaCol ? (item.raw[entity.thaanaCol] || '') : ''
+        thaana: resolveEntityField(item.raw, entity.label, 'Thaana') || (entity.thaanaCol ? (item.raw[entity.thaanaCol] || '') : '')
       });
     }
   });

@@ -1,0 +1,27 @@
+{
+  "_comment": "Mapping of administrative atoll names to their Google Sheets spreadsheet IDs. Used by scripts/sync_atolls.py.",
+  "folder_id": "1jg0zsjKa4piAwwJmHn7YJFrmCVlLpUon",
+  "folder_url": "https://drive.google.com/drive/folders/1jg0zsjKa4piAwwJmHn7YJFrmCVlLpUon?usp=sharing",
+  "sheets": {
+    "01_HA_haa_alifu": "1VRi5dZwh2IL_JFOcOY9gD97G4l6yfkavHhZXTU_S8I0",
+    "02_HDh_haa_dhaalu": "1hYy-mWzIl3BT0mFNLSTn2eXLigjbWYJRoVtYdfBnVmY",
+    "03_Sh_shaviyani": "1QvFpA_q88pvXtrsuVwNX3qy_K5A2ZTQbrCI4rV3s_BU",
+    "04_N_noonu": "1jz8pzj_Di-itmCY9tfO8dD2M8XrG1KIzvsJSzEIc420",
+    "05_R_raa": "12Mf7mFzkg7UO38lhmL5of-jsXmBhlFzfqfKpIUxjZ3E",
+    "06_B_baa": "1yitAqOs3if71W32WnO0qHf8zAed9SPurbPNAFzx69ok",
+    "07_Lh_lhaviyani": "1HXFU9ObdzJGecn93C528bpu9vNVkwa03Ab4nMD6xp30",
+    "08_K_kaafu": "15Fp0PklVuGrVOcAEQZS-sObS4frsYAlfBMRiZArGmew",
+    "09_AA_alifu_alifu": "1nIrirW9GnnsRKQNdkT5yGFxNeKXC9zq-5UZyMEvMz1M",
+    "10_ADh_alifu_dhaalu": "1KzlU9m9XxRbkD3bK4CW7SLY24gAGXRlcVgch4JxL2FA",
+    "11_V_vaavu": "1Rj6D6k436aFU79Elr-jRYPbofTWBoIWTK1dndQzTVWg",
+    "12_M_meemu": "1M-L16fMceeTcrZfFO9zk1gcakscDD3QEpgPP1ji93qI",
+    "13_F_faafu": "1g1fEi3Oxy-su7rLP0_aZ7ITKve_NFuHBJIa8NXo4A0E",
+    "14_Dh_dhaalu": "1Cty2RVKYe1pEh63T3HFWDm1z07v6QaDeggL5D7NNWew",
+    "15_Th_thaa": "1C8jYMV1vZ71TPM5N3V87jl_R6Putpbac2e4GVQoAT5E",
+    "16_L_laamu": "1OzuWtHTNPqVQ2BefDjUg_3Ljrj0n2opvsA-BWAqMmxk",
+    "17_GA_gaafu_alifu": "1MLg_9hAxwx3byg1aj0WxqiRoGcCi6gh4QSSgIAXKvx8",
+    "18_GDh_gaafu_dhaalu": "1fKz8Q8qlae4MrMaFcyR5KKsYbiHvH49hN6ra4iZhyAg",
+    "19_GN_gnaviyani": "18LMGJ5ok4-oCieAeVwqS8HXGBQD7J_6yZgJY6iQTFR0",
+    "20_S_seenu_addu": "1SLKnU5usxhHfXosazrDcxafm1lmhUbHsHs8vFfsGVpc"
+  }
+}
