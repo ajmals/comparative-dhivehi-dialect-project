@@ -30,3 +30,9 @@ data/extractions/
 data/raw/
 *.tar.gz
 *.zip
+
+# Private App & Backend (moved to separate private repository: dhivehi-dialect-platform)
+apps/
+supabase/
+COMMUNITY_CONTRIBUTION_PROPOSAL.md
+
