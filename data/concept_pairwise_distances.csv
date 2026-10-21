@@ -165,18 +165,12 @@ SW100-012,Swadesh 100,Miscellaneous,burn,Huvadhu,Arabic,Edhaa,Ḧaraqa,5,0.7143,
 SW100-012,Swadesh 100,Miscellaneous,burn,Fuvahmulah,Sinhala,Endhun,Puccanavā,8,0.8889,11.11,No
 SW100-012,Swadesh 100,Miscellaneous,burn,Fuvahmulah,Malayalam,Endhun,Kattikkuka,9,0.9,10.0,No
 SW100-012,Swadesh 100,Miscellaneous,burn,Fuvahmulah,Arabic,Endhun,Ḧaraqa,7,1.0,0.0,No
-SW100-013,Swadesh 100,Body Parts & Substances,claw,Male',Addu,Niyafai,Niyafah,1,0.1429,85.71,Yes
-SW100-013,Swadesh 100,Body Parts & Substances,claw,Male',Fuvahmulah,Niyafai,Niyafau,1,0.1429,85.71,Yes
-SW100-013,Swadesh 100,Body Parts & Substances,claw,Male',Sinhala,Niyafai,Niyapòtu,4,0.5,50.0,No
-SW100-013,Swadesh 100,Body Parts & Substances,claw,Male',Malayalam,Niyafai,Nakhaṃ,5,0.7143,28.57,No
-SW100-013,Swadesh 100,Body Parts & Substances,claw,Male',Arabic,Niyafai,Jḧufra,6,0.8571,14.29,No
-SW100-013,Swadesh 100,Body Parts & Substances,claw,Addu,Fuvahmulah,Niyafah,Niyafau,1,0.1429,85.71,Yes
-SW100-013,Swadesh 100,Body Parts & Substances,claw,Addu,Sinhala,Niyafah,Niyapòtu,4,0.5,50.0,No
-SW100-013,Swadesh 100,Body Parts & Substances,claw,Addu,Malayalam,Niyafah,Nakhaṃ,5,0.7143,28.57,No
-SW100-013,Swadesh 100,Body Parts & Substances,claw,Addu,Arabic,Bulhi,Jḧufra,6,0.8571,14.29,No
-SW100-013,Swadesh 100,Body Parts & Substances,claw,Fuvahmulah,Sinhala,Niyafau,Niyapòtu,3,0.375,62.5,No
-SW100-013,Swadesh 100,Body Parts & Substances,claw,Fuvahmulah,Malayalam,Niyafau,Nakhaṃ,5,0.7143,28.57,No
-SW100-013,Swadesh 100,Body Parts & Substances,claw,Fuvahmulah,Arabic,Niyafau,Jḧufra,6,0.8571,14.29,No
+SW100-013,Swadesh 100,Body Parts & Substances,claw,Male',Addu,Vaki,vaki,0,0.0,100.0,Yes
+SW100-013,Swadesh 100,Body Parts & Substances,claw,Male',Huvadhu,Vaki,Vaki,0,0.0,100.0,Yes
+SW100-013,Swadesh 100,Body Parts & Substances,claw,Male',Fuvahmulah,Vaki,Vaki,0,0.0,100.0,Yes
+SW100-013,Swadesh 100,Body Parts & Substances,claw,Addu,Huvadhu,vaki,Vaki,0,0.0,100.0,Yes
+SW100-013,Swadesh 100,Body Parts & Substances,claw,Addu,Fuvahmulah,vaki,Vaki,0,0.0,100.0,Yes
+SW100-013,Swadesh 100,Body Parts & Substances,claw,Huvadhu,Fuvahmulah,Vaki,Vaki,0,0.0,100.0,Yes
 SW100-014,Swadesh 100,Natural Objects & Phenomena,cloud,Male',Addu,Vilaa,Kolhi,4,0.8,20.0,Yes
 SW100-014,Swadesh 100,Natural Objects & Phenomena,cloud,Male',Huvadhu,Vilaa,Velaa,1,0.2,80.0,Yes
 SW100-014,Swadesh 100,Natural Objects & Phenomena,cloud,Male',Fuvahmulah,Vilaa,Velai,2,0.4,60.0,Yes
@@ -597,7 +591,7 @@ SW100-042,Swadesh 100,Personal Pronouns,I,Male',Huvadhu,Aharen,Aike,4,0.6667,33.
 SW100-042,Swadesh 100,Personal Pronouns,I,Male',Fuvahmulah,Ma,Ma,0,0.0,100.0,Yes
 SW100-042,Swadesh 100,Personal Pronouns,I,Male',Sinhala,Ma,Maṃ,1,0.3333,66.67,No
 SW100-042,Swadesh 100,Personal Pronouns,I,Male',Malayalam,Aharen,Ñān,5,0.8333,16.67,No
-SW100-042,Swadesh 100,Personal Pronouns,I,Male',Arabic,Alhugandu,Anā,7,0.7778,22.22,No
+SW100-042,Swadesh 100,Personal Pronouns,I,Male',Arabic,Aharen,Anā,5,0.8333,16.67,No
 SW100-042,Swadesh 100,Personal Pronouns,I,Addu,Huvadhu,Ava,Aike,3,0.75,25.0,Yes
 SW100-042,Swadesh 100,Personal Pronouns,I,Addu,Fuvahmulah,Ma,Ma,0,0.0,100.0,Yes
 SW100-042,Swadesh 100,Personal Pronouns,I,Addu,Sinhala,Ma,Maṃ,1,0.3333,66.67,No
@@ -888,10 +882,10 @@ SW100-058,Swadesh 100,Body Parts & Substances,neck,Huvadhu,Arabic,Karaa,Raqabaha
 SW100-058,Swadesh 100,Body Parts & Substances,neck,Fuvahmulah,Sinhala,Karo,Bèlla,5,1.0,0.0,No
 SW100-058,Swadesh 100,Body Parts & Substances,neck,Fuvahmulah,Malayalam,Karo,Kal̤utt,5,0.7143,28.57,No
 SW100-058,Swadesh 100,Body Parts & Substances,neck,Fuvahmulah,Arabic,Karo,Raqabaha,7,0.875,12.5,No
-SW100-059,Swadesh 100,Descriptives,new,Male',Addu,Au,Au,0,0.0,100.0,Yes
+SW100-059,Swadesh 100,Descriptives,new,Male',Addu,Aa,Au,1,0.5,50.0,Yes
 SW100-059,Swadesh 100,Descriptives,new,Male',Huvadhu,Aa,Ale,2,0.6667,33.33,Yes
 SW100-059,Swadesh 100,Descriptives,new,Male',Fuvahmulah,Aa,Al,1,0.5,50.0,Yes
-SW100-059,Swadesh 100,Descriptives,new,Male',Sinhala,Au,Alut,2,0.5,50.0,No
+SW100-059,Swadesh 100,Descriptives,new,Male',Sinhala,Aa,Alut,3,0.75,25.0,No
 SW100-059,Swadesh 100,Descriptives,new,Male',Malayalam,Aa,Putiya,5,0.8333,16.67,No
 SW100-059,Swadesh 100,Descriptives,new,Addu,Huvadhu,Au,Ale,2,0.6667,33.33,Yes
 SW100-059,Swadesh 100,Descriptives,new,Addu,Fuvahmulah,Au,Al,1,0.5,50.0,Yes
@@ -966,20 +960,20 @@ SW100-063,Swadesh 100,Numerals,one,Huvadhu,Sinhala,Eken,Èka,3,0.75,25.0,No
 SW100-063,Swadesh 100,Numerals,one,Huvadhu,Malayalam,Eken,Ònn,3,0.75,25.0,No
 SW100-063,Swadesh 100,Numerals,one,Fuvahmulah,Sinhala,Ekeu,Èka,3,0.75,25.0,No
 SW100-063,Swadesh 100,Numerals,one,Fuvahmulah,Malayalam,Ekeu,Ònn,4,1.0,0.0,No
-SW100-064,Swadesh 100,Persons,person (human being),Male',Addu,Meehaa,Meehaa,0,0.0,100.0,Yes
-SW100-064,Swadesh 100,Persons,person (human being),Male',Huvadhu,Meehaa,Meeheke,3,0.4286,57.14,Yes
-SW100-064,Swadesh 100,Persons,person (human being),Male',Fuvahmulah,Meehaa,Meehaa,0,0.0,100.0,Yes
-SW100-064,Swadesh 100,Persons,person (human being),Male',Sinhala,Meehaa,Minihā,5,0.8333,16.67,No
-SW100-064,Swadesh 100,Persons,person (human being),Male',Arabic,Meehaa,Insāna,5,0.8333,16.67,No
-SW100-064,Swadesh 100,Persons,person (human being),Addu,Huvadhu,Meehaa,Meeheke,3,0.4286,57.14,Yes
-SW100-064,Swadesh 100,Persons,person (human being),Addu,Fuvahmulah,Meehaa,Meehaa,0,0.0,100.0,Yes
-SW100-064,Swadesh 100,Persons,person (human being),Addu,Sinhala,Meehaa,Minihā,5,0.8333,16.67,No
-SW100-064,Swadesh 100,Persons,person (human being),Addu,Arabic,Meehaa,Insāna,5,0.8333,16.67,No
-SW100-064,Swadesh 100,Persons,person (human being),Huvadhu,Fuvahmulah,Meeheke,Meehaa,3,0.4286,57.14,Yes
-SW100-064,Swadesh 100,Persons,person (human being),Huvadhu,Sinhala,Meeheke,Minihā,6,0.8571,14.29,No
-SW100-064,Swadesh 100,Persons,person (human being),Huvadhu,Arabic,Meeheke,Insāna,7,1.0,0.0,No
-SW100-064,Swadesh 100,Persons,person (human being),Fuvahmulah,Sinhala,Meehaa,Minihā,5,0.8333,16.67,No
-SW100-064,Swadesh 100,Persons,person (human being),Fuvahmulah,Arabic,Meehaa,Insāna,5,0.8333,16.67,No
+SW100-064,Swadesh 100,Persons,person,Male',Addu,Meehaa,Meehaa,0,0.0,100.0,Yes
+SW100-064,Swadesh 100,Persons,person,Male',Huvadhu,Meehaa,Meeheke,3,0.4286,57.14,Yes
+SW100-064,Swadesh 100,Persons,person,Male',Fuvahmulah,Meehaa,Meehaa,0,0.0,100.0,Yes
+SW100-064,Swadesh 100,Persons,person,Male',Sinhala,Meehaa,Minihā,5,0.8333,16.67,No
+SW100-064,Swadesh 100,Persons,person,Male',Arabic,Meehaa,Insāna,5,0.8333,16.67,No
+SW100-064,Swadesh 100,Persons,person,Addu,Huvadhu,Meehaa,Meeheke,3,0.4286,57.14,Yes
+SW100-064,Swadesh 100,Persons,person,Addu,Fuvahmulah,Meehaa,Meehaa,0,0.0,100.0,Yes
+SW100-064,Swadesh 100,Persons,person,Addu,Sinhala,Meehaa,Minihā,5,0.8333,16.67,No
+SW100-064,Swadesh 100,Persons,person,Addu,Arabic,Meehaa,Insāna,5,0.8333,16.67,No
+SW100-064,Swadesh 100,Persons,person,Huvadhu,Fuvahmulah,Meeheke,Meehaa,3,0.4286,57.14,Yes
+SW100-064,Swadesh 100,Persons,person,Huvadhu,Sinhala,Meeheke,Minihā,6,0.8571,14.29,No
+SW100-064,Swadesh 100,Persons,person,Huvadhu,Arabic,Meeheke,Insāna,7,1.0,0.0,No
+SW100-064,Swadesh 100,Persons,person,Fuvahmulah,Sinhala,Meehaa,Minihā,5,0.8333,16.67,No
+SW100-064,Swadesh 100,Persons,person,Fuvahmulah,Arabic,Meehaa,Insāna,5,0.8333,16.67,No
 SW100-065,Swadesh 100,Natural Objects & Phenomena,rain,Male',Addu,Vaarey,Vaarei,1,0.1667,83.33,Yes
 SW100-065,Swadesh 100,Natural Objects & Phenomena,rain,Male',Huvadhu,Vaarey,Vaarei,1,0.1667,83.33,Yes
 SW100-065,Swadesh 100,Natural Objects & Phenomena,rain,Male',Fuvahmulah,Vaarey,Vaarehi,2,0.2857,71.43,Yes
@@ -1008,24 +1002,24 @@ SW100-066,Swadesh 100,Colors,red,Addu,Sinhala,Rah,Ratu,2,0.5,50.0,No
 SW100-066,Swadesh 100,Colors,red,Huvadhu,Fuvahmulah,Rathe,Rau,3,0.6,40.0,Yes
 SW100-066,Swadesh 100,Colors,red,Huvadhu,Sinhala,Rathe,Ratu,2,0.4,60.0,No
 SW100-066,Swadesh 100,Colors,red,Fuvahmulah,Sinhala,Rau,Ratu,1,0.25,75.0,No
-SW100-067,Swadesh 100,Miscellaneous,road (path),Male',Addu,Magu,Maga,1,0.25,75.0,Yes
-SW100-067,Swadesh 100,Miscellaneous,road (path),Male',Huvadhu,Magu,Magaa,2,0.4,60.0,Yes
-SW100-067,Swadesh 100,Miscellaneous,road (path),Male',Fuvahmulah,Magu,Mago,1,0.25,75.0,Yes
-SW100-067,Swadesh 100,Miscellaneous,road (path),Male',Sinhala,Magu,Ma,2,0.5,50.0,No
-SW100-067,Swadesh 100,Miscellaneous,road (path),Male',Malayalam,Magu,Val̤i,4,0.8,20.0,No
-SW100-067,Swadesh 100,Miscellaneous,road (path),Male',Arabic,Magu,T̈aarīqa,7,0.875,12.5,No
-SW100-067,Swadesh 100,Miscellaneous,road (path),Addu,Huvadhu,Maga,Magaa,1,0.2,80.0,Yes
-SW100-067,Swadesh 100,Miscellaneous,road (path),Addu,Fuvahmulah,Maga,Mago,1,0.25,75.0,Yes
-SW100-067,Swadesh 100,Miscellaneous,road (path),Addu,Sinhala,Maga,Ma,2,0.5,50.0,No
-SW100-067,Swadesh 100,Miscellaneous,road (path),Addu,Malayalam,Maga,Pāta,3,0.75,25.0,No
-SW100-067,Swadesh 100,Miscellaneous,road (path),Addu,Arabic,Maga,T̈aarīqa,6,0.75,25.0,No
-SW100-067,Swadesh 100,Miscellaneous,road (path),Huvadhu,Fuvahmulah,Magaa,Mago,2,0.4,60.0,Yes
-SW100-067,Swadesh 100,Miscellaneous,road (path),Huvadhu,Sinhala,Magaa,Ma,3,0.6,40.0,No
-SW100-067,Swadesh 100,Miscellaneous,road (path),Huvadhu,Malayalam,Magaa,Val̤i,4,0.8,20.0,No
-SW100-067,Swadesh 100,Miscellaneous,road (path),Huvadhu,Arabic,Magaa,T̈aarīqa,6,0.75,25.0,No
-SW100-067,Swadesh 100,Miscellaneous,road (path),Fuvahmulah,Sinhala,Mago,Ma,2,0.5,50.0,No
-SW100-067,Swadesh 100,Miscellaneous,road (path),Fuvahmulah,Malayalam,Mago,Val̤i,4,0.8,20.0,No
-SW100-067,Swadesh 100,Miscellaneous,road (path),Fuvahmulah,Arabic,Mago,T̈aarīqa,7,0.875,12.5,No
+SW100-067,Swadesh 100,Miscellaneous,road,Male',Addu,Magu,Maga,1,0.25,75.0,Yes
+SW100-067,Swadesh 100,Miscellaneous,road,Male',Huvadhu,Magu,Magaa,2,0.4,60.0,Yes
+SW100-067,Swadesh 100,Miscellaneous,road,Male',Fuvahmulah,Magu,Mago,1,0.25,75.0,Yes
+SW100-067,Swadesh 100,Miscellaneous,road,Male',Sinhala,Magu,Ma,2,0.5,50.0,No
+SW100-067,Swadesh 100,Miscellaneous,road,Male',Malayalam,Magu,Val̤i,4,0.8,20.0,No
+SW100-067,Swadesh 100,Miscellaneous,road,Male',Arabic,Magu,T̈aarīqa,7,0.875,12.5,No
+SW100-067,Swadesh 100,Miscellaneous,road,Addu,Huvadhu,Maga,Magaa,1,0.2,80.0,Yes
+SW100-067,Swadesh 100,Miscellaneous,road,Addu,Fuvahmulah,Maga,Mago,1,0.25,75.0,Yes
+SW100-067,Swadesh 100,Miscellaneous,road,Addu,Sinhala,Maga,Ma,2,0.5,50.0,No
+SW100-067,Swadesh 100,Miscellaneous,road,Addu,Malayalam,Maga,Pāta,3,0.75,25.0,No
+SW100-067,Swadesh 100,Miscellaneous,road,Addu,Arabic,Maga,T̈aarīqa,6,0.75,25.0,No
+SW100-067,Swadesh 100,Miscellaneous,road,Huvadhu,Fuvahmulah,Magaa,Mago,2,0.4,60.0,Yes
+SW100-067,Swadesh 100,Miscellaneous,road,Huvadhu,Sinhala,Magaa,Ma,3,0.6,40.0,No
+SW100-067,Swadesh 100,Miscellaneous,road,Huvadhu,Malayalam,Magaa,Val̤i,4,0.8,20.0,No
+SW100-067,Swadesh 100,Miscellaneous,road,Huvadhu,Arabic,Magaa,T̈aarīqa,6,0.75,25.0,No
+SW100-067,Swadesh 100,Miscellaneous,road,Fuvahmulah,Sinhala,Mago,Ma,2,0.5,50.0,No
+SW100-067,Swadesh 100,Miscellaneous,road,Fuvahmulah,Malayalam,Mago,Val̤i,4,0.8,20.0,No
+SW100-067,Swadesh 100,Miscellaneous,road,Fuvahmulah,Arabic,Mago,T̈aarīqa,7,0.875,12.5,No
 SW100-068,Swadesh 100,Plants & Plant Parts,root,Male',Addu,Moo,Moo,0,0.0,100.0,Yes
 SW100-068,Swadesh 100,Plants & Plant Parts,root,Male',Huvadhu,Moo,Mule,3,0.75,25.0,Yes
 SW100-068,Swadesh 100,Plants & Plant Parts,root,Male',Fuvahmulah,Moo,Mul,2,0.6667,33.33,Yes
@@ -1188,12 +1182,12 @@ SW100-078,Swadesh 100,Natural Objects & Phenomena,smoke,Huvadhu,Sinhala,Dhume,Du
 SW100-078,Swadesh 100,Natural Objects & Phenomena,smoke,Huvadhu,Malayalam,Dhume,Puka,4,0.8,20.0,No
 SW100-078,Swadesh 100,Natural Objects & Phenomena,smoke,Fuvahmulah,Sinhala,Dhun,Duma,3,0.75,25.0,No
 SW100-078,Swadesh 100,Natural Objects & Phenomena,smoke,Fuvahmulah,Malayalam,Dhun,Puka,4,1.0,0.0,No
-SW100-079,Swadesh 100,Position & Movement,stand,Male',Addu,Kolhahurun,Kedahishun,6,0.6,40.0,Yes
-SW100-079,Swadesh 100,Position & Movement,stand,Male',Huvadhu,Kolhahurun,Kodanhuttun,5,0.4545,54.55,Yes
-SW100-079,Swadesh 100,Position & Movement,stand,Male',Fuvahmulah,Kolhahurun,Thedhovun,7,0.7,30.0,Yes
-SW100-079,Swadesh 100,Position & Movement,stand,Male',Sinhala,Kolhahurun,Hiṭagannavā,10,0.9091,9.09,No
-SW100-079,Swadesh 100,Position & Movement,stand,Male',Malayalam,Kolhahurun,Nilkkuka,8,0.8,20.0,No
-SW100-079,Swadesh 100,Position & Movement,stand,Male',Arabic,Kolhahurun,V̈aqafa,9,0.9,10.0,No
+SW100-079,Swadesh 100,Position & Movement,stand,Male',Addu,Kolhah hurun,Kedahishun,7,0.5833,41.67,Yes
+SW100-079,Swadesh 100,Position & Movement,stand,Male',Huvadhu,Kolhah hurun,Kodanhuttun,6,0.5,50.0,Yes
+SW100-079,Swadesh 100,Position & Movement,stand,Male',Fuvahmulah,Kolhah hurun,Thedhovun,8,0.6667,33.33,Yes
+SW100-079,Swadesh 100,Position & Movement,stand,Male',Sinhala,Kolhah hurun,Hiṭagannavā,11,0.9167,8.33,No
+SW100-079,Swadesh 100,Position & Movement,stand,Male',Malayalam,Kolhah hurun,Nilkkuka,10,0.8333,16.67,No
+SW100-079,Swadesh 100,Position & Movement,stand,Male',Arabic,Kolhah hurun,V̈aqafa,11,0.9167,8.33,No
 SW100-079,Swadesh 100,Position & Movement,stand,Addu,Huvadhu,Kedahishun,Kodanhuttun,5,0.4545,54.55,Yes
 SW100-079,Swadesh 100,Position & Movement,stand,Addu,Fuvahmulah,Kedahishun,Thedhovun,6,0.6,40.0,Yes
 SW100-079,Swadesh 100,Position & Movement,stand,Addu,Sinhala,Kedahishun,Hiṭagannavā,10,0.9091,9.09,No
@@ -1307,18 +1301,18 @@ SW100-086,Swadesh 100,Location & Deixis,this,Huvadhu,Sinhala,Mi,Me,1,0.5,50.0,No
 SW100-086,Swadesh 100,Location & Deixis,this,Huvadhu,Malayalam,Mi,It,2,1.0,0.0,No
 SW100-086,Swadesh 100,Location & Deixis,this,Fuvahmulah,Sinhala,Mi,Me,1,0.5,50.0,No
 SW100-086,Swadesh 100,Location & Deixis,this,Fuvahmulah,Malayalam,Mi,It,2,1.0,0.0,No
-SW100-087,Swadesh 100,Personal Pronouns,thou,Male',Addu,Thibeyfulhaa,Thoa,9,0.75,25.0,Yes
-SW100-087,Swadesh 100,Personal Pronouns,thou,Male',Huvadhu,Thibeyfulhaa,Thoa,9,0.75,25.0,Yes
-SW100-087,Swadesh 100,Personal Pronouns,thou,Male',Fuvahmulah,Thibeyfulhaa,Tha,9,0.75,25.0,Yes
+SW100-087,Swadesh 100,Personal Pronouns,thou,Male',Addu,Kaley,Thoa,5,1.0,0.0,Yes
+SW100-087,Swadesh 100,Personal Pronouns,thou,Male',Huvadhu,Kaley,Thoa,5,1.0,0.0,Yes
+SW100-087,Swadesh 100,Personal Pronouns,thou,Male',Fuvahmulah,Kaley,Tha,5,1.0,0.0,Yes
 SW100-087,Swadesh 100,Personal Pronouns,thou,Male',Sinhala,Kaley,Òhe,4,0.8,20.0,No
 SW100-087,Swadesh 100,Personal Pronouns,thou,Male',Malayalam,Kaley,Nī,5,1.0,0.0,No
 SW100-087,Swadesh 100,Personal Pronouns,thou,Addu,Huvadhu,Thoa,Thoa,0,0.0,100.0,Yes
 SW100-087,Swadesh 100,Personal Pronouns,thou,Addu,Fuvahmulah,Thoa,Tha,1,0.25,75.0,Yes
 SW100-087,Swadesh 100,Personal Pronouns,thou,Addu,Sinhala,Thoa,To,2,0.5,50.0,No
 SW100-087,Swadesh 100,Personal Pronouns,thou,Addu,Malayalam,Thoa,Nī,4,1.0,0.0,No
-SW100-087,Swadesh 100,Personal Pronouns,thou,Huvadhu,Fuvahmulah,Tha,Tha,0,0.0,100.0,Yes
+SW100-087,Swadesh 100,Personal Pronouns,thou,Huvadhu,Fuvahmulah,Thoa,Tha,1,0.25,75.0,Yes
 SW100-087,Swadesh 100,Personal Pronouns,thou,Huvadhu,Sinhala,Thoa,To,2,0.5,50.0,No
-SW100-087,Swadesh 100,Personal Pronouns,thou,Huvadhu,Malayalam,Tha,Nī,3,1.0,0.0,No
+SW100-087,Swadesh 100,Personal Pronouns,thou,Huvadhu,Malayalam,Thoa,Nī,4,1.0,0.0,No
 SW100-087,Swadesh 100,Personal Pronouns,thou,Fuvahmulah,Sinhala,Tha,Òhe,2,0.6667,33.33,No
 SW100-087,Swadesh 100,Personal Pronouns,thou,Fuvahmulah,Malayalam,Tha,Nī,3,1.0,0.0,No
 SW100-088,Swadesh 100,Body Parts & Substances,tongue,Male',Addu,Dhoo,Dheetheli,7,0.7778,22.22,Yes
@@ -1357,12 +1351,12 @@ SW100-089,Swadesh 100,Body Parts & Substances,tooth,Huvadhu,Arabic,Dhathe,Sinna,
 SW100-089,Swadesh 100,Body Parts & Substances,tooth,Fuvahmulah,Sinhala,Dhau,Data,3,0.75,25.0,No
 SW100-089,Swadesh 100,Body Parts & Substances,tooth,Fuvahmulah,Malayalam,Dhau,Pall,4,1.0,0.0,No
 SW100-089,Swadesh 100,Body Parts & Substances,tooth,Fuvahmulah,Arabic,Dhau,Sinna,5,1.0,0.0,No
-SW100-090,Swadesh 100,Plants & Plant Parts,tree,Male',Addu,Gas,Gis,1,0.3333,66.67,Yes
-SW100-090,Swadesh 100,Plants & Plant Parts,tree,Male',Huvadhu,Gas,Gahe,2,0.5,50.0,Yes
-SW100-090,Swadesh 100,Plants & Plant Parts,tree,Male',Fuvahmulah,Gas,Gehe,3,0.75,25.0,Yes
-SW100-090,Swadesh 100,Plants & Plant Parts,tree,Male',Sinhala,Gas,Gasa,1,0.25,75.0,No
-SW100-090,Swadesh 100,Plants & Plant Parts,tree,Male',Malayalam,Gas,Maraṃ,4,0.8,20.0,No
-SW100-090,Swadesh 100,Plants & Plant Parts,tree,Male',Arabic,Gas,Śajaraha,7,0.875,12.5,No
+SW100-090,Swadesh 100,Plants & Plant Parts,tree,Male',Addu,Gass,Gis,2,0.5,50.0,Yes
+SW100-090,Swadesh 100,Plants & Plant Parts,tree,Male',Huvadhu,Gass,Gahe,2,0.5,50.0,Yes
+SW100-090,Swadesh 100,Plants & Plant Parts,tree,Male',Fuvahmulah,Gass,Gehe,3,0.75,25.0,Yes
+SW100-090,Swadesh 100,Plants & Plant Parts,tree,Male',Sinhala,Gass,Gasa,1,0.25,75.0,No
+SW100-090,Swadesh 100,Plants & Plant Parts,tree,Male',Malayalam,Gass,Maraṃ,4,0.8,20.0,No
+SW100-090,Swadesh 100,Plants & Plant Parts,tree,Male',Arabic,Gass,Śajaraha,7,0.875,12.5,No
 SW100-090,Swadesh 100,Plants & Plant Parts,tree,Addu,Huvadhu,Gis,Gahe,3,0.75,25.0,Yes
 SW100-090,Swadesh 100,Plants & Plant Parts,tree,Addu,Fuvahmulah,Gis,Gehe,3,0.75,25.0,Yes
 SW100-090,Swadesh 100,Plants & Plant Parts,tree,Addu,Sinhala,Gis,Gasa,2,0.5,50.0,No
@@ -1429,10 +1423,10 @@ SW100-094,Swadesh 100,Natural Objects & Phenomena,water,Fuvahmulah,Sinhala,Fen,V
 SW100-094,Swadesh 100,Natural Objects & Phenomena,water,Fuvahmulah,Arabic,Fen,Māʔ,3,1.0,0.0,No
 SW100-095,Swadesh 100,Personal Pronouns,we,Male',Addu,Aharemen,Afirin,5,0.625,37.5,Yes
 SW100-095,Swadesh 100,Personal Pronouns,we,Male',Huvadhu,Aharemen,Ahane,4,0.5,50.0,Yes
-SW100-095,Swadesh 100,Personal Pronouns,we,Male',Fuvahmulah,Alugandumen,Afun,8,0.7273,27.27,Yes
+SW100-095,Swadesh 100,Personal Pronouns,we,Male',Fuvahmulah,Aharemen,Afun,6,0.75,25.0,Yes
 SW100-095,Swadesh 100,Personal Pronouns,we,Male',Sinhala,Aharemen,Api,7,0.875,12.5,No
 SW100-095,Swadesh 100,Personal Pronouns,we,Male',Malayalam,Aharemen,Namma,6,0.75,25.0,No
-SW100-095,Swadesh 100,Personal Pronouns,we,Male',Arabic,Alugandumen,Naḧnu,9,0.8182,18.18,No
+SW100-095,Swadesh 100,Personal Pronouns,we,Male',Arabic,Aharemen,Naḧnu,7,0.875,12.5,No
 SW100-095,Swadesh 100,Personal Pronouns,we,Addu,Huvadhu,Afirin,Ahane,5,0.8333,16.67,Yes
 SW100-095,Swadesh 100,Personal Pronouns,we,Addu,Fuvahmulah,Afirin,Afun,3,0.5,50.0,Yes
 SW100-095,Swadesh 100,Personal Pronouns,we,Addu,Sinhala,Afirin,Api,4,0.6667,33.33,No

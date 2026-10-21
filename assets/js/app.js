@@ -32,9 +32,9 @@ const state = {
 // Dialect metadata mapping
 const DIALECTS = [
   { key: 'male', label: "Male' (Std)", latinCol: "Male' - Latin", thaanaCol: "Male' - Thaana", color: 'var(--col-male)' },
-  { key: 'addu', label: 'Addu', latinCol: "Addu - Consensus - Latin", thaanaCol: "Addu - Consensus - Thaana", color: 'var(--col-addu)' },
-  { key: 'huvadhu', label: 'Huvadhu', latinCol: "Huvadhu - Consensus - Latin", thaanaCol: "Huvadhu - Consensus - Thaana", color: 'var(--col-huvadhu)' },
-  { key: 'fuvahmulah', label: 'Fuvahmulah', latinCol: "Fuvahmulah - Consensus - Latin", thaanaCol: "Fuvahmulah - Consensus - Thaana", color: 'var(--col-fuvahmulah)' },
+  { key: 'addu', label: 'Addu', latinCol: "Addu - Latin", thaanaCol: "Addu - Thaana", color: 'var(--col-addu)' },
+  { key: 'huvadhu', label: 'Huvadhu', latinCol: "Huvadhu - Latin", thaanaCol: "Huvadhu - Thaana", color: 'var(--col-huvadhu)' },
+  { key: 'fuvahmulah', label: 'Fuvahmulah', latinCol: "Fuvahmulah - Latin", thaanaCol: "Fuvahmulah - Thaana", color: 'var(--col-fuvahmulah)' },
   { key: 'maliku', label: 'Maliku (Mahl)', latinCol: "Maliku - Latin", thaanaCol: "Maliku - Thaana", color: 'var(--col-maliku)' },
 ];
 
